@@ -78,21 +78,28 @@ namespace lab_3.ViewModels
 
         public void SaveCar(object parameter)
         {
-            if (SelectedCar != null)
+            if (SelectedCar == null)
+            {
+                return;
+            }
+
+            try
             {
                 if (SelectedCar.CarId == 0)
                 {
                     _carRepository.Add(SelectedCar);
-                    //Cars.Add(SelectedCar);
-                    UpdateCarList();
                 }
                 else
                 {
-                    _carRepository.Update(SelectedCar);
-                    UpdateCarList();
+                    _carRepository.Update(SelectedCar);   
                 }
-
+                _carRepository.SaveChanges();
             }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show($"An error occurred while saving the car: {ex.Message}", "Save Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
+            UpdateCarList();
         }
 
         public void Cancel(object parameter)
@@ -105,11 +112,21 @@ namespace lab_3.ViewModels
 
         private void DeleteCar(object parameter)
         {
-            if (SelectedCar != null)
+            if (SelectedCar == null)
+            {
+                return;
+            }
+            try
             {
                 _carRepository.Delete(SelectedCar);
-                //Cars.Remove(SelectedCar);
+                _carRepository.SaveChanges();
             }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show($"An error occurred while deleting the car: {ex.Message}", "Delete Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
+
+            //Cars.Remove(SelectedCar);
             UpdateCarList();
         }
 
@@ -123,12 +140,24 @@ namespace lab_3.ViewModels
 
         private void UpdateCarList()
         {
-            Cars.Clear();
-            var cars = _carRepository.GetAll();
-            foreach (var car in cars)
+            if (Cars == null)
             {
-                Cars.Add(car);
+                Cars = new ObservableCollection<Car>();
             }
+            Cars.Clear();
+            try
+            {
+                var cars = _carRepository.GetAll();
+                foreach (var car in cars)
+                {
+                    Cars.Add(car);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show($"An error occurred while updating the car list: {ex.Message}", "Update Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+            }
+
         }
     }
 }

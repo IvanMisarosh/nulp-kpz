@@ -7,7 +7,7 @@ using lab_3.Models;
 
 namespace lab_3.Repositories
 {
-    public class ColorRepository
+    public class ColorRepository: IRepository<Color>
     {
         private CarServiceKpzContext _context;
 
@@ -16,9 +16,29 @@ namespace lab_3.Repositories
             _context = context;
         }
 
+        public void Add(Color entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Color entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Color> GetAll()
         {
             return _context.Colors.ToList();
+        }
+
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Color entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

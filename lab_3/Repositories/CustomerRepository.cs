@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace lab_3.Repositories
 {
-    public class CustomerRepository
+    public class CustomerRepository : IRepository<Customer>
     {
         private CarServiceKpzContext _context;
         public CustomerRepository(CarServiceKpzContext context) 
@@ -22,16 +22,32 @@ namespace lab_3.Repositories
         public void Add(Customer customer)
         {
             _context.Customers.Add(customer);
-            _context.SaveChanges();
         }
 
         public void Update(Customer customer) {
             _context.Customers.Update(customer);
-            _context.SaveChanges();
         }
 
         public void Delete(Customer customer) {
-            _context.Customers.Remove(customer);
+            try 
+            {
+                _context.Customers.Attach(customer);
+            }
+            catch (InvalidOperationException)
+            {
+                // if the entity is not being tracked by the context
+                // we need to find it first
+                var existing = _context.Customers.Find(customer.CustomerId);
+                if (existing != null)
+                {
+                    _context.Customers.Remove(existing);
+                }
+            }
+
+        }
+
+        public void SaveChanges()
+        {
             _context.SaveChanges();
         }
     }

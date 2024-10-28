@@ -7,7 +7,7 @@ using lab_3.Models;
 
 namespace lab_3.Repositories
 {
-    public class CarModelRepository
+    public class CarModelRepository: IRepository<CarModel>
     {
         private CarServiceKpzContext _context;
 
@@ -16,9 +16,30 @@ namespace lab_3.Repositories
             _context = context;
         }
 
+        public void Add(CarModel entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(CarModel entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<CarModel> GetAll()
         {
             return _context.CarModels.ToList();
+        }
+
+
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(CarModel entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

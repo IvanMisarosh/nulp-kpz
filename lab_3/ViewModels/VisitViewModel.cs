@@ -6,6 +6,7 @@ using lab_3.Models;
 using lab_3.Repositories;
 using lab_3.InfoWindows;
 using lab_3.Command;
+using System.Windows;
 
 namespace lab_3.ViewModels
 {
@@ -14,6 +15,7 @@ namespace lab_3.ViewModels
         public ObservableCollection<Visit> Visits { get; set; }
 
         private Visit _selectedVisit;
+        private Visit _editableVisit;
         private VisitInfoWindow _visitInfoWindow;
 
         public Visit SelectedVisit
@@ -46,7 +48,7 @@ namespace lab_3.ViewModels
         public VisitViewModel()
         {
             _visitRepository = new VisitRepository(new CarServiceKpzContext());
-            Visits = new ObservableCollection<Visit>(_visitRepository.GetAll());
+            UpdateVisitList();
 
             AddCommand = new RelayCommand(AddVisit);
             SaveCommand = new RelayCommand(SaveVisit);
@@ -79,20 +81,30 @@ namespace lab_3.ViewModels
 
         public void SaveVisit(object parameter)
         {
-            if (SelectedVisit != null)
+            if (SelectedVisit == null)
             {
+                return;
+            }
+            try
+            { 
                 if (SelectedVisit.VisitId == 0)
                 {
                     GenerateRandomVisitNumber();
                     _visitRepository.Add(SelectedVisit);
-                    UpdateVisitList();
                 }
                 else
                 {
                     _visitRepository.Update(SelectedVisit);
-                    UpdateVisitList();
+                    
                 }
+                
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while saving the visit: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            _visitRepository.SaveChanges();
+            UpdateVisitList();
         }
 
         private void GenerateRandomVisitNumber()
@@ -113,7 +125,16 @@ namespace lab_3.ViewModels
         {
             if (SelectedVisit != null)
             {
-                _visitRepository.Delete(SelectedVisit);
+                try
+                {
+                    _visitRepository.Delete(SelectedVisit);
+                    _visitRepository.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while deleting the visit: {ex.Message}", "Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                }
             }
             UpdateVisitList();
         }
@@ -128,12 +149,26 @@ namespace lab_3.ViewModels
 
         private void UpdateVisitList()
         {
-            Visits.Clear();
-            var visits = _visitRepository.GetAll();
-            foreach (var visit in visits)
+            if (Visits == null)
             {
-                Visits.Add(visit);
+                Visits = new ObservableCollection<Visit>();
             }
+
+            Visits.Clear();
+            try
+            {
+                var visits = _visitRepository.GetAll();
+                foreach (var visit in visits)
+                {
+                    Visits.Add(visit);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while updating the visit list: {ex.Message}", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
+
     }
 }

@@ -11,6 +11,7 @@ using lab_3.Models;
 using lab_3.Repositories;
 using lab_3.InfoWindows;
 using lab_3.Command;
+using System.Windows;
 
 namespace lab_3.ViewModels
 {
@@ -69,15 +70,24 @@ namespace lab_3.ViewModels
 
         public void SaveCustomer(object parameter)
         {
-            if (SelectedCustomer.CustomerId == 0)
+            try
             {
-                _customerRepository.Add(SelectedCustomer);
-                //Customers.Add(SelectedCustomer);
+                if (SelectedCustomer.CustomerId == 0)
+                {
+                    _customerRepository.Add(SelectedCustomer);
+                    //Customers.Add(SelectedCustomer);
+                }
+                else
+                {
+                    _customerRepository.Update(SelectedCustomer);
+                }
+                _customerRepository.SaveChanges();
             }
-            else
+            catch (Exception ex)
             {
-                _customerRepository.Update(SelectedCustomer);
+                MessageBox.Show($"An error occurred while saving the visit: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
             UpdateCustomerList();
 
             _customerInfoWindow.Close();
@@ -94,11 +104,20 @@ namespace lab_3.ViewModels
 
         private void DeleteCustomer(object parameter)
         {
-            if (SelectedCustomer != null)
+            if (SelectedCustomer == null)
+            {
+                return;
+            }
+            try
             {
                 _customerRepository.Delete(SelectedCustomer);
-                Customers.Remove(SelectedCustomer);
+                _customerRepository.SaveChanges();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while deleting the customer: {ex.Message}", "Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            UpdateCustomerList();
         }
 
         private void UpdateCustomer(object parameter)
@@ -116,11 +135,22 @@ namespace lab_3.ViewModels
 
         private void UpdateCustomerList()
         {
-            Customers.Clear();
-            var customers = _customerRepository.GetAll();
-            foreach (var customer in customers)
+            if (Customers == null)
             {
-                Customers.Add(customer);
+                Customers = new ObservableCollection<Customer>();
+            }
+            Customers.Clear();
+            try
+            {
+                var customers = _customerRepository.GetAll();
+                foreach (var customer in customers)
+                {
+                    Customers.Add(customer);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while updating the customer list: {ex.Message}", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

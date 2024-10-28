@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lab_3.InfoWindows"
         mc:Ignorable="d"
-        Title="CarInfoWindow" Height="550" Width="800">
+        Title="CarInfoWindow" Height="610" Width="800">
 
     <Grid>
         <StackPanel Margin="20">

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace lab_3.Repositories
 {
-    public class VisitRepository
+    public class VisitRepository: IRepository<Visit>
     {
         private CarServiceKpzContext _context;
         public VisitRepository(CarServiceKpzContext context)
@@ -23,18 +23,31 @@ namespace lab_3.Repositories
         public void Add(Visit visit)
         {
             _context.Visits.Add(visit);
-            _context.SaveChanges();
         }
 
         public void Update(Visit visit)
         {
             _context.Visits.Update(visit);
-            _context.SaveChanges();
         }
 
         public void Delete(Visit visit)
         {
-            _context.Visits.Remove(visit);
+            try
+            {
+                _context.Visits.Remove(visit);
+            }
+            catch (Exception e)
+            {
+                var existing = _context.Visits.Find(visit.VisitId);
+                if (existing != null)
+                {
+                    _context.Visits.Remove(existing);
+                }
+            }
+        }
+
+        public void SaveChanges()
+        {
             _context.SaveChanges();
         }
     }

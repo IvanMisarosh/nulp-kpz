@@ -7,7 +7,7 @@ using lab_3.Models;
 
 namespace lab_3.Repositories
 {
-    public class EmployeeRepository
+    public class EmployeeRepository : IRepository<Employee>
     {
         private CarServiceKpzContext _context;
 
@@ -16,11 +16,29 @@ namespace lab_3.Repositories
             _context = context;
         }
 
+        public void Add(Employee entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Employee entity)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Employee> GetAll()
         {
             return _context.Employees.ToList();
         }
 
-        
+        public void SaveChanges()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Employee entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

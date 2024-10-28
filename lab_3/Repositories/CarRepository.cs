@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace lab_3.Repositories
 {
 
-    public class CarRepository
+    public class CarRepository: IRepository<Car>
     {
         private CarServiceKpzContext _context;
 
@@ -31,18 +31,32 @@ namespace lab_3.Repositories
         public void Add(Car car)
         {
             _context.Cars.Add(car);
-            _context.SaveChanges();
         }
 
         public void Update(Car car)
         {
             _context.Cars.Update(car);
-            _context.SaveChanges();
         }
 
         public void Delete(Car car)
         {
-            _context.Cars.Remove(car);
+            try
+            {
+                _context.Cars.Remove(car);
+            }
+            catch (Exception e)
+            {
+                var existing = _context.Cars.Find(car.CarId);
+                if (existing != null)
+                {
+                    _context.Cars.Remove(existing);
+                }
+            }
+
+        }
+
+        public void SaveChanges()
+        {
             _context.SaveChanges();
         }
     }
