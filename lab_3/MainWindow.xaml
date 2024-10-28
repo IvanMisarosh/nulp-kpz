@@ -3,10 +3,112 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:lab_3"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <TabControl Margin="5">
+            <TabItem Header="Customers" DataContext="{Binding CustomerViewModel}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Bottom" 
+                          Orientation="Horizontal" 
+                          HorizontalAlignment="Center" 
+                          Margin="0,10,0,10">
+                        <Button Content="Add Customer" Command="{Binding AddCommand}"/>
+                        <Button Content="Update Customer" Command="{Binding UpdateCommand}"/>
+                        <Button Content="Delete Customer" Command="{Binding DeleteCommand}"/>
+                    </StackPanel>
 
+                    <!--<DataGrid ItemsSource="{Binding Customers}" 
+                        SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" 
+                        AutoGenerateColumns="True">
+                    </DataGrid>-->
+
+                    <DataGrid ItemsSource="{Binding Customers}" Margin="10" 
+                      SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" 
+                      AutoGenerateColumns="False">  
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Customer ID" Binding="{Binding CustomerId}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
+                            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
+                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- Cars Tab -->
+            <TabItem Header="Cars" DataContext="{Binding CarViewModel}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Bottom" 
+                          Orientation="Horizontal" 
+                          HorizontalAlignment="Center" 
+                          Margin="0,10,0,10">
+                        <Button Content="Add Car" Command="{Binding AddCommand}"/>
+                        <Button Content="Update Car" Command="{Binding UpdateCommand}"/>
+                        <Button Content="Delete Car" Command="{Binding DeleteCommand}"/>
+                    </StackPanel>
+
+                    <!--<DataGrid ItemsSource="{Binding Cars}" 
+                        SelectedItem="{Binding SelectedCar, Mode=TwoWay}" 
+                        AutoGenerateColumns="True">
+
+
+                    </DataGrid>-->
+
+                    <DataGrid ItemsSource="{Binding Cars}" Margin="10"
+                        SelectedItem="{Binding SelectedCar, Mode=TwoWay}" 
+                        AutoGenerateColumns="False">    
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Car ID" Binding="{Binding CarId}"/>
+                            <DataGridTextColumn Header="Model Name" Binding="{Binding CarModel.ModelName}"/>
+                            <DataGridTextColumn Header="Color" Binding="{Binding Color.ColorName}"/>
+                            <DataGridTextColumn Header="Customer" Binding="{Binding Customer.FirstName}"/>
+                            <DataGridTextColumn Header="VIN" Binding="{Binding Vin}"/>
+                            <DataGridTextColumn Header="Mileage" Binding="{Binding Mileage}"/>
+                            <DataGridTextColumn Header="Manufacture Year" Binding="{Binding ManufactureYear}"/>
+                            <DataGridTextColumn Header="Note" Binding="{Binding Note}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Header="Visits" DataContext="{Binding VisitViewModel}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Bottom" 
+                       Orientation="Horizontal" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,10,0,10">  
+                        <Button Content="Add Visit" Command="{Binding AddCommand}"/>
+                        <Button Content="Update Visit" Command="{Binding UpdateCommand}"/>
+                        <Button Content="Delete Visit" Command="{Binding DeleteCommand}"/>
+                    </StackPanel>
+
+                    <!--<DataGrid ItemsSource="{Binding Visits}" 
+                         SelectedItem="{Binding SelectedVisit, Mode=TwoWay}" 
+                         AutoGenerateColumns="True">    
+                    </DataGrid>-->
+
+                    <DataGrid ItemsSource="{Binding Visits}" Margin="10"
+                          SelectedItem="{Binding SelectedVisit, Mode=TwoWay}" 
+                          AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Visit ID" Binding="{Binding VisitId}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Visit Status" Binding="{Binding VisitStatus.StatusName}" />
+                            <DataGridTextColumn Header="Car ID" Binding="{Binding Car.Vin}" />
+                            <DataGridTextColumn Header="Employee ID" Binding="{Binding Employee.FirstName}" />
+                            <DataGridTextColumn Header="Payment Status" Binding="{Binding PaymentStatus.PaymentName}" />
+                            <DataGridTextColumn Header="Visit Date" Binding="{Binding VisitDate, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
+                            <DataGridTextColumn Header="Planned End Date" Binding="{Binding PlannedEndDate, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
+                            <DataGridTextColumn Header="Actual End Date" Binding="{Binding ActualEndDate, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
+                            <DataGridTextColumn Header="Details" Binding="{Binding Details}" />
+                            <DataGridTextColumn Header="Visit Number" Binding="{Binding VisitNumber}" />
+                            <DataGridTextColumn Header="Price" Binding="{Binding Price}" />
+                            <DataGridTextColumn Header="Payment Date" Binding="{Binding PaymentDate, StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

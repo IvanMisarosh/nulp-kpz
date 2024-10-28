@@ -1,0 +1,73 @@
+﻿<Window x:Class="lab_3.InfoWindows.VisitInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:lab_3.InfoWindows"
+        mc:Ignorable="d"
+        Title="VisitInfoWindow" Height="700" Width="800">
+    
+    <Grid>
+        <StackPanel Margin="20">
+            <Label Content="Visit ID:"/>
+            <TextBox x:Name="VisitIdTextBox" IsReadOnly="True" Text="{Binding SelectedVisit.VisitId}"/>
+
+            <Label Content="Visit Status:"/>
+            <ComboBox x:Name="VisitStatusComboBox" 
+                SelectedValue="{Binding SelectedVisit.VisitStatusId}" 
+                ItemsSource="{Binding VisitStatuses}" 
+                DisplayMemberPath="StatusName" 
+                SelectedValuePath="VisitStatusId"/>
+
+            <Label Content="Car:"/>
+            <ComboBox x:Name="CarComboBox" 
+                SelectedValue="{Binding SelectedVisit.CarId}" 
+                ItemsSource="{Binding Cars}" 
+                DisplayMemberPath="Vin" 
+                SelectedValuePath="CarId"/>
+
+            <Label Content="Employee:"/>
+            <ComboBox x:Name="EmployeeComboBox" 
+                SelectedValue="{Binding SelectedVisit.EmployeeId}" 
+                ItemsSource="{Binding Employees}" 
+                DisplayMemberPath="FirstName" 
+                SelectedValuePath="EmployeeId"/>
+
+            <Label Content="Payment Status:"/>
+            <ComboBox x:Name="PaymentStatusComboBox" 
+                SelectedValue="{Binding SelectedVisit.PaymentStatusId}" 
+                ItemsSource="{Binding PaymentStatuses}" 
+                DisplayMemberPath="PaymentName" 
+                SelectedValuePath="PaymentStatusId"/>
+
+            <Label Content="Visit Date:"/>
+            <DatePicker x:Name="VisitDatePicker" SelectedDate="{Binding SelectedVisit.VisitDate}"/>
+            <!--<xctk:DateTimePicker Name="VisitDatePicker" Value="{Binding SelectedVisit.VisitDate}" Format="Custom" 
+                     FormatString="yyyy-MM-dd hh:mm" />-->
+            
+            <Label Content="Planned End Date:"/>
+            <DatePicker x:Name="PlannedEndDatePicker" SelectedDate="{Binding SelectedVisit.PlannedEndDate}"/>
+
+            <Label Content="Actual End Date:"/>
+            <DatePicker x:Name="ActualEndDatePicker" SelectedDate="{Binding SelectedVisit.ActualEndDate}"/>
+
+            <Label Content="Details:"/>
+            <TextBox x:Name="DetailsTextBox" AcceptsReturn="True" Height="20" TextWrapping="Wrap" Text="{Binding SelectedVisit.Details}"/>
+
+            <Label Content="Visit Number:"/>
+            <TextBox x:Name="VisitNumberTextBox" IsReadOnly="True" Text="{Binding SelectedVisit.VisitNumber}"/>
+
+            <Label Content="Price:"/>
+            <TextBox x:Name="PriceTextBox" Text="{Binding SelectedVisit.Price}"/>
+
+            <Label Content="Payment Date:"/>
+            <DatePicker x:Name="PaymentDatePicker" SelectedDate="{Binding SelectedVisit.PaymentDate}"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,10">
+                <Button Content="Save" Command="{Binding SaveCommand}" Width="100" Margin="5"/>
+                <Button Content="Cancel" Command="{Binding CancelCommand}" Width="100" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
