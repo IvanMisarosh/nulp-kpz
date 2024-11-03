@@ -12,8 +12,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using lab_3.Models;
-using lab_3.Repositories;
+using DbFirst.Models;
+using DbFirst.Repositories;
 using lab_3.ViewModels;
 using lab_3.Command;
 
@@ -24,7 +24,7 @@ namespace lab_3.InfoWindows
     /// </summary>
     public partial class CarInfoWindow : Window
     {
-        public ObservableCollection<Models.Color> Colors { get; set; }
+        public ObservableCollection<DbFirst.Models.Color> Colors { get; set; }
         public ObservableCollection<CarModel> CarModels { get; set; }
         public ObservableCollection<Customer> Customers { get; set; }
         public Car SelectedCar { get; set; }
@@ -50,7 +50,7 @@ namespace lab_3.InfoWindows
             _viewModel = viewModel;
             SelectedCar = viewModel.SelectedCar;
 
-            Colors = new ObservableCollection<Models.Color>(_colorRepository.GetAll());
+            Colors = new ObservableCollection<DbFirst.Models.Color>(_colorRepository.GetAll());
             CarModels = new ObservableCollection<CarModel>(_carModelRepository.GetAll());
             Customers = new ObservableCollection<Customer>(_customerRepository.GetAll());
 

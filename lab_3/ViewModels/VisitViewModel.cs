@@ -2,8 +2,8 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using lab_3.Models;
-using lab_3.Repositories;
+using DbFirst.Models;
+using DbFirst.Repositories;
 using lab_3.InfoWindows;
 using lab_3.Command;
 using System.Windows;

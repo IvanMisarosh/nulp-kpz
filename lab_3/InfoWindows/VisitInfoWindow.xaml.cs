@@ -1,6 +1,6 @@
 ﻿using lab_3.Command;
-using lab_3.Models;
-using lab_3.Repositories;
+using DbFirst.Models;
+using DbFirst.Repositories;
 using lab_3.ViewModels;
 using System;
 using System;
