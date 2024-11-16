@@ -10,35 +10,35 @@
     <Grid>
         <StackPanel Margin="20">
             <Label Content="Car ID:"/>
-            <TextBox x:Name="CarIdTextBox" IsReadOnly="True" Text="{Binding SelectedCar.CarId}" />
+            <TextBox x:Name="CarIdTextBox" IsReadOnly="True" Text="{Binding SelectedCar.CarID}" />
 
             <Label Content="Customer:"/>
             <ComboBox x:Name="CustomerComboBox" 
-                SelectedValue="{Binding SelectedCar.CustomerId}" 
+                SelectedValue="{Binding SelectedCar.CustomerID}" 
                 ItemsSource="{Binding Customers}" 
                 DisplayMemberPath="FirstName"
-                SelectedValuePath="CustomerId"/>
+                SelectedValuePath="CustomerID"/>
 
 
             <Label Content="Car Model:"/>
             <ComboBox x:Name="CarModelComboBox" 
-              SelectedValue="{Binding SelectedCar.CarModelId}" 
+              SelectedValue="{Binding SelectedCar.CarModelID}" 
               ItemsSource="{Binding CarModels}" 
               DisplayMemberPath="ModelName" 
-              SelectedValuePath="CarModelId" />
+              SelectedValuePath="CarModelID" />
 
             <Label Content="Color:"/>
             <ComboBox x:Name="ColorComboBox" 
-              SelectedValue="{Binding SelectedCar.ColorId}" 
+              SelectedValue="{Binding SelectedCar.ColorID}" 
               ItemsSource="{Binding Colors}" 
               DisplayMemberPath="ColorName" 
-              SelectedValuePath="ColorId" />
+              SelectedValuePath="ColorID" />
 
             <Label Content="Manufacture Year:"/>
             <TextBox x:Name="ManufactureYearTextBox" Text="{Binding SelectedCar.ManufactureYear}"/>
 
             <Label Content="VIN:"/>
-            <TextBox x:Name="VinTextBox" Text="{Binding SelectedCar.Vin}"/>
+            <TextBox x:Name="VinTextBox" Text="{Binding SelectedCar.VIN}"/>
 
             <Label Content="Mileage:"/>
             <TextBox x:Name="MileageTextBox" Text="{Binding SelectedCar.Mileage}"/>

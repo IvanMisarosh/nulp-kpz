@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CodeFirst\CodeFirst.csproj" />
     <ProjectReference Include="..\DbFirst\DbFirst.csproj" />
   </ItemGroup>
 

@@ -3,42 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abstraction;
+using Abstraction.ModelInterfaces;
 using DbFirst.Models;
 
 namespace DbFirst.Repositories
 {
-    public class ColorRepository: IRepository<Color>
+    public class ColorRepository : IRepository<IColor>
     {
-        private CarServiceKpzContext _context;
+        private readonly CarServiceKpzContext _context;
 
         public ColorRepository(CarServiceKpzContext context)
         {
             _context = context;
         }
 
-        public void Add(Color entity)
+        public void Add(IColor entity)
         {
-            throw new NotImplementedException();
+            if (entity is Color color)
+            {
+                _context.Colors.Add(color);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid entity type");
+            }
         }
 
-        public void Delete(Color entity)
+        public void Delete(IColor entity)
         {
-            throw new NotImplementedException();
+            if (entity is Color color)
+            {
+                _context.Colors.Remove(color);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid entity type");
+            }
         }
 
-        public List<Color> GetAll()
+        public List<IColor> GetAll()
         {
-            return _context.Colors.ToList();
+            return _context.Colors.Cast<IColor>().ToList();
         }
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
 
-        public void Update(Color entity)
+        public void Update(IColor entity)
         {
-            throw new NotImplementedException();
+            if (entity is Color color)
+            {
+                _context.Colors.Update(color);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid entity type");
+            }
         }
     }
 }

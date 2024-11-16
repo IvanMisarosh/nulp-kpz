@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abstraction.ModelInterfaces;
 
 namespace DbFirst.Models;
 
-public partial class Employee
+public partial class Employee: IEmployee
 {
-    public int EmployeeId { get; set; }
+    public int EmployeeID { get; set; }
 
-    public int? EmployeePositionId { get; set; }
+    public int? EmployeePositionID { get; set; }
 
-    public int StationId { get; set; }
+    public int StationID { get; set; }
 
     public string FirstName { get; set; } = null!;
 

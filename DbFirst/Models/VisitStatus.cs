@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abstraction.ModelInterfaces;
 
 namespace DbFirst.Models;
 
-public partial class VisitStatus
+public partial class VisitStatus : IVisitStatus
 {
-    public int VisitStatusId { get; set; }
+    public int VisitStatusID { get; set; }
 
     public string StatusName { get; set; } = null!;
 

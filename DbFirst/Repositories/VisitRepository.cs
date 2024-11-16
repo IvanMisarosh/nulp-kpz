@@ -1,4 +1,5 @@
-﻿using DbFirst.Models;
+﻿using Abstraction;
+using DbFirst.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DbFirst.Repositories
@@ -38,7 +39,7 @@ namespace DbFirst.Repositories
             }
             catch (Exception e)
             {
-                var existing = _context.Visits.Find(visit.VisitId);
+                var existing = _context.Visits.Find(visit.VisitID);
                 if (existing != null)
                 {
                     _context.Visits.Remove(existing);

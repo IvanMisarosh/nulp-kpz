@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel Margin="20">
             <Label Content="Customer ID:"/>
-            <TextBox x:Name="CustomerIdTextBox" IsReadOnly="True" Text="{Binding SelectedCustomer.CustomerId}"/>
+            <TextBox x:Name="CustomerIdTextBox" IsReadOnly="True" Text="{Binding SelectedCustomer.CustomerID}"/>
 
             <Label Content="Email:"/>
             <TextBox x:Name="EmailTextBox" Text="{Binding SelectedCustomer.Email}" />

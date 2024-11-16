@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using DbFirst.Models;
-using DbFirst.Repositories;
-using lab_3.ViewModels;
+using Abstraction;
+using Abstraction.ModelInterfaces;
 using lab_3.Command;
+using lab_3.ViewModels;
 
 namespace lab_3.InfoWindows
 {
@@ -24,36 +13,45 @@ namespace lab_3.InfoWindows
     /// </summary>
     public partial class CarInfoWindow : Window
     {
-        public ObservableCollection<DbFirst.Models.Color> Colors { get; set; }
-        public ObservableCollection<CarModel> CarModels { get; set; }
-        public ObservableCollection<Customer> Customers { get; set; }
-        public Car SelectedCar { get; set; }
+        public ObservableCollection<IColor> Colors { get; set; }
+        public ObservableCollection<ICarModel> CarModels { get; set; }
+        public ObservableCollection<ICustomer> Customers { get; set; }
+        public ICar SelectedCar { get; set; }
+
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private ColorRepository _colorRepository;
-        private CarModelRepository _carModelRepository;
-        private CustomerRepository _customerRepository;
-        private CarViewModel _viewModel;
+        private readonly IRepository<IColor> _colorRepository;
+        private readonly IRepository<ICarModel> _carModelRepository;
+        private readonly IRepository<ICustomer> _customerRepository;
+        private readonly CarViewModel _viewModel;
 
         public CarInfoWindow()
         {
             InitializeComponent();
         }
 
-        public CarInfoWindow(ColorRepository colorRepository, CarModelRepository carModelRepository, CustomerRepository customerRepository,  CarViewModel viewModel)
+        // Оновлений конструктор з використанням інтерфейсів
+        public CarInfoWindow(
+            IRepository<IColor> colorRepository,
+            IRepository<ICarModel> carModelRepository,
+            IRepository<ICustomer> customerRepository,
+            CarViewModel viewModel)
         {
             InitializeComponent();
+
             _colorRepository = colorRepository;
             _carModelRepository = carModelRepository;
             _customerRepository = customerRepository;
             _viewModel = viewModel;
+
+            // Ініціалізація даних
             SelectedCar = viewModel.SelectedCar;
+            Colors = new ObservableCollection<IColor>(_colorRepository.GetAll());
+            CarModels = new ObservableCollection<ICarModel>(_carModelRepository.GetAll());
+            Customers = new ObservableCollection<ICustomer>(_customerRepository.GetAll());
 
-            Colors = new ObservableCollection<DbFirst.Models.Color>(_colorRepository.GetAll());
-            CarModels = new ObservableCollection<CarModel>(_carModelRepository.GetAll());
-            Customers = new ObservableCollection<Customer>(_customerRepository.GetAll());
-
+            // Налаштування команд
             SaveCommand = new RelayCommand(o =>
             {
                 _viewModel.SaveCar(SelectedCar);
@@ -67,8 +65,6 @@ namespace lab_3.InfoWindows
             });
 
             DataContext = this;
-
-
         }
     }
 }

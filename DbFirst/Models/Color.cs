@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abstraction.ModelInterfaces;
 
 namespace DbFirst.Models;
 
-public partial class Color
+public partial class Color : IColor
 {
-    public int ColorId { get; set; }
+    public int ColorID { get; set; }
 
     public string ColorName { get; set; } = null!;
 

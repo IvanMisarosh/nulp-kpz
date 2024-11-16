@@ -1,4 +1,6 @@
-﻿using DbFirst.Models;
+﻿using Abstraction;
+using Abstraction.ModelInterfaces;
+using DbFirst.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,37 +9,37 @@ using System.Threading.Tasks;
 
 namespace DbFirst.Repositories
 {
-    public class CustomerRepository : IRepository<Customer>
+    public class CustomerRepository : IRepository<ICustomer>
     {
         private CarServiceKpzContext _context;
         public CustomerRepository(CarServiceKpzContext context) 
         {
             _context = context;
         }
-        public List<Customer> GetAll()
+        public List<ICustomer> GetAll()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.ToList<ICustomer>();
         }
 
-        public void Add(Customer customer)
+        public void Add(ICustomer customer)
         {
-            _context.Customers.Add(customer);
+            _context.Customers.Add((Customer)customer);
         }
 
-        public void Update(Customer customer) {
-            _context.Customers.Update(customer);
+        public void Update(ICustomer customer) {
+            _context.Customers.Update((Customer)customer);
         }
 
-        public void Delete(Customer customer) {
+        public void Delete(ICustomer customer) {
             try 
             {
-                _context.Customers.Attach(customer);
+                _context.Customers.Attach((Customer)customer);
             }
             catch (InvalidOperationException)
             {
                 // if the entity is not being tracked by the context
                 // we need to find it first
-                var existing = _context.Customers.Find(customer.CustomerId);
+                var existing = _context.Customers.Find(customer.CustomerID);
                 if (existing != null)
                 {
                     _context.Customers.Remove(existing);

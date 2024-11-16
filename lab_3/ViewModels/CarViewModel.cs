@@ -2,21 +2,21 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using DbFirst.Models;
-using DbFirst.Repositories;
 using lab_3.InfoWindows;
 using lab_3.Command;
+using Abstraction;
+using Abstraction.ModelInterfaces;
 
 namespace lab_3.ViewModels
 {
-
     public class CarViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Car> Cars { get; set; }
+        public ObservableCollection<ICar> Cars { get; set; }
 
-        private Car _selectedCar;
+        private ICar _selectedCar;
         private CarInfoWindow CarInfoWindow;
-        public Car SelectedCar
+        public IRepositoryFactory RepositoryFactory { get; set; }
+        public ICar SelectedCar
         {
             get => _selectedCar;
             set
@@ -35,7 +35,7 @@ namespace lab_3.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private readonly CarRepository _carRepository;
+        private readonly IRepository<ICar> _carRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -43,10 +43,11 @@ namespace lab_3.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public CarViewModel()
+        public CarViewModel(IRepositoryFactory factory)
         {
-            _carRepository = new CarRepository(new CarServiceKpzContext());
-            Cars = new ObservableCollection<Car>(_carRepository.GetAll());
+            RepositoryFactory = factory;
+            _carRepository = RepositoryFactory.GetRepository<ICar>();
+            Cars = new ObservableCollection<ICar>(_carRepository.GetAll());
 
             AddCommand = new RelayCommand(AddCar);
             SaveCommand = new RelayCommand(SaveCar);
@@ -57,7 +58,7 @@ namespace lab_3.ViewModels
 
         public void AddCar(object parameter)
         {
-            SelectedCar = new Car();
+            SelectedCar = RepositoryFactory.CreateCar();
             OpenCarInfoWindow();
         }
 
@@ -68,66 +69,58 @@ namespace lab_3.ViewModels
                 CarInfoWindow.Close();
             }
 
-            CarInfoWindow = new CarInfoWindow(new ColorRepository(new CarServiceKpzContext()),
-                new CarModelRepository(new CarServiceKpzContext()),
-                new CustomerRepository(new CarServiceKpzContext()),
+            // Використовуємо інтерфейси для передачі в CarInfoWindow
+            CarInfoWindow = new CarInfoWindow(
+                RepositoryFactory.GetRepository<IColor>(),
+                RepositoryFactory.GetRepository<ICarModel>(),
+                RepositoryFactory.GetRepository<ICustomer>(),
                 this);
             CarInfoWindow.Show();
-
         }
+
 
         public void SaveCar(object parameter)
         {
-            if (SelectedCar == null)
-            {
-                return;
-            }
+            if (SelectedCar == null) return;
 
             try
             {
-                if (SelectedCar.CarId == 0)
+                if (SelectedCar.CarID == 0)
                 {
                     _carRepository.Add(SelectedCar);
                 }
                 else
                 {
-                    _carRepository.Update(SelectedCar);   
+                    _carRepository.Update(SelectedCar);
                 }
                 _carRepository.SaveChanges();
+                UpdateCarList();
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show($"An error occurred while saving the car: {ex.Message}", "Save Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                System.Windows.MessageBox.Show($"Error saving car: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
-            UpdateCarList();
         }
 
         public void Cancel(object parameter)
         {
-            if (CarInfoWindow != null)
-            {
-                CarInfoWindow.Close();
-            }
+            CarInfoWindow?.Close();
         }
 
         private void DeleteCar(object parameter)
         {
-            if (SelectedCar == null)
-            {
-                return;
-            }
+            if (SelectedCar == null) return;
+
             try
             {
                 _carRepository.Delete(SelectedCar);
                 _carRepository.SaveChanges();
+                UpdateCarList();
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show($"An error occurred while deleting the car: {ex.Message}", "Delete Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                System.Windows.MessageBox.Show($"Error deleting car: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
-
-            //Cars.Remove(SelectedCar);
-            UpdateCarList();
         }
 
         private void UpdateCar(object parameter)
@@ -140,24 +133,12 @@ namespace lab_3.ViewModels
 
         private void UpdateCarList()
         {
-            if (Cars == null)
-            {
-                Cars = new ObservableCollection<Car>();
-            }
             Cars.Clear();
-            try
+            var cars = _carRepository.GetAll();
+            foreach (var car in cars)
             {
-                var cars = _carRepository.GetAll();
-                foreach (var car in cars)
-                {
-                    Cars.Add(car);
-                }
+                Cars.Add(car);
             }
-            catch (System.Exception ex)
-            {
-                System.Windows.MessageBox.Show($"An error occurred while updating the car list: {ex.Message}", "Update Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-            }
-
         }
     }
 }

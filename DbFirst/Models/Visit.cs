@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abstraction.ModelInterfaces;
 
 namespace DbFirst.Models;
 
-public partial class Visit
+public partial class Visit: IVisit
 {
-    public int VisitId { get; set; }
+    public int VisitID { get; set; }
 
-    public int VisitStatusId { get; set; }
+    public int VisitStatusID { get; set; }
 
-    public int CarId { get; set; }
+    public int CarID { get; set; }
 
-    public int EmployeeId { get; set; }
+    public int EmployeeID { get; set; }
 
-    public int? PaymentStatusId { get; set; }
+    public int? PaymentStatusID { get; set; }
 
     public DateTime? VisitDate { get; set; }
 

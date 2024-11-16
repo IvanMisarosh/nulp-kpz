@@ -3,43 +3,68 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abstraction;
+using Abstraction.ModelInterfaces;
 using DbFirst.Models;
 
 namespace DbFirst.Repositories
 {
-    public class CarModelRepository: IRepository<CarModel>
+    public class CarModelRepository : IRepository<ICarModel>
     {
-        private CarServiceKpzContext _context;
+        private readonly CarServiceKpzContext _context;
 
         public CarModelRepository(CarServiceKpzContext context)
         {
             _context = context;
         }
 
-        public void Add(CarModel entity)
+        public void Add(ICarModel entity)
         {
-            throw new NotImplementedException();
+            if (entity is CarModel carModel)
+            {
+                _context.CarModels.Add(carModel);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid entity type");
+            }
         }
 
-        public void Delete(CarModel entity)
+        public void Delete(ICarModel entity)
         {
-            throw new NotImplementedException();
+            if (entity is CarModel carModel)
+            {
+                _context.CarModels.Remove(carModel);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid entity type");
+            }
         }
 
-        public List<CarModel> GetAll()
+        public List<ICarModel> GetAll()
         {
-            return _context.CarModels.ToList();
+            return _context.CarModels.Cast<ICarModel>().ToList();
         }
-
 
         public void SaveChanges()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
 
-        public void Update(CarModel entity)
+        public void Update(ICarModel entity)
         {
-            throw new NotImplementedException();
+            if (entity is CarModel carModel)
+            {
+                _context.CarModels.Update(carModel);
+                SaveChanges();
+            }
+            else
+            {
+                throw new ArgumentException("Invalid entity type");
+            }
         }
     }
 }

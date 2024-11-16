@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DbFirst.Models;
-using DbFirst.Repositories;
+//using DbFirst.Repositories;
 using lab_3.InfoWindows;
 using lab_3.Command;
 using System.Windows;
+using Abstraction;
 
 namespace lab_3.ViewModels
 {
@@ -21,6 +22,8 @@ namespace lab_3.ViewModels
 
         private Customer _selectedCustomer;
         private CustomerInfoWindow _customerInfoWindow;
+
+        public IRepositoryFactory RepositoryFactory { get; set; }
 
         public Customer SelectedCustomer
         {
@@ -41,7 +44,7 @@ namespace lab_3.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private readonly CustomerRepository _customerRepository;
+        private readonly IRepository<Customer> _customerRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -49,9 +52,10 @@ namespace lab_3.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public CustomerViewModel()
+        public CustomerViewModel(IRepositoryFactory factory)
         {
-            _customerRepository = new CustomerRepository(new CarServiceKpzContext());
+            RepositoryFactory = factory;
+            _customerRepository = factory.GetRepository<Customer>();
             Customers = new ObservableCollection<Customer>(_customerRepository.GetAll());
 
             AddCommand = new RelayCommand(AddCustomer);
@@ -59,7 +63,7 @@ namespace lab_3.ViewModels
             CancelCommand = new RelayCommand(Cancel);
             DeleteCommand = new RelayCommand(DeleteCustomer);
             UpdateCommand = new RelayCommand(UpdateCustomer);
-
+            
         }
 
         public void AddCustomer(object parameter)
@@ -72,7 +76,7 @@ namespace lab_3.ViewModels
         {
             try
             {
-                if (SelectedCustomer.CustomerId == 0)
+                if (SelectedCustomer.CustomerID == 0)
                 {
                     _customerRepository.Add(SelectedCustomer);
                     //Customers.Add(SelectedCustomer);

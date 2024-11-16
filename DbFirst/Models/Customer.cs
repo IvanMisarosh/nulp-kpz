@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abstraction.ModelInterfaces;
 
 namespace DbFirst.Models;
 
-public partial class Customer
+public partial class Customer : ICustomer
 {
-    public int CustomerId { get; set; }
+    public int CustomerID { get; set; }
 
     public string? Email { get; set; }
 

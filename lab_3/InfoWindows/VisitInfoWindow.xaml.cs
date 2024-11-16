@@ -1,16 +1,12 @@
 ﻿using lab_3.Command;
 using DbFirst.Models;
-using DbFirst.Repositories;
+//using CodeFirst.Models;
 using lab_3.ViewModels;
-using System;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-//using lab_3.Models;
-//using lab_3.Repositories;
-//using lab_3.ViewModels;
-//using lab_3.Command;
+using Abstraction;  
+
 
 namespace lab_3.InfoWindows
 {
@@ -27,10 +23,10 @@ namespace lab_3.InfoWindows
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private VisitStatusRepository _visitStatusRepository;
-        private CarRepository _carRepository;
-        private EmployeeRepository _employeeRepository;
-        private PaymentStatusRepository _paymentStatusRepository;
+        private IRepository<VisitStatus> _visitStatusRepository;
+        private IRepository<Car> _carRepository;
+        private IRepository<Employee> _employeeRepository;
+        private IRepository<PaymentStatus> _paymentStatusRepository;
         private VisitViewModel _viewModel;
 
         public VisitInfoWindow()
@@ -39,10 +35,10 @@ namespace lab_3.InfoWindows
         }
 
         public VisitInfoWindow(
-            VisitStatusRepository visitStatusRepository,
-            CarRepository carRepository,
-            EmployeeRepository employeeRepository,
-            PaymentStatusRepository paymentStatusRepository,
+            IRepository<VisitStatus> visitStatusRepository,
+            IRepository<Car> carRepository,
+            IRepository<Employee> employeeRepository,
+            IRepository<PaymentStatus> paymentStatusRepository,
             VisitViewModel viewModel)
         {
             InitializeComponent();

@@ -11,35 +11,35 @@
     <Grid>
         <StackPanel Margin="20">
             <Label Content="Visit ID:"/>
-            <TextBox x:Name="VisitIdTextBox" IsReadOnly="True" Text="{Binding SelectedVisit.VisitId}"/>
+            <TextBox x:Name="VisitIdTextBox" IsReadOnly="True" Text="{Binding SelectedVisit.VisitID}"/>
 
             <Label Content="Visit Status:"/>
             <ComboBox x:Name="VisitStatusComboBox" 
-                SelectedValue="{Binding SelectedVisit.VisitStatusId}" 
+                SelectedValue="{Binding SelectedVisit.VisitStatusID}" 
                 ItemsSource="{Binding VisitStatuses}" 
                 DisplayMemberPath="StatusName" 
-                SelectedValuePath="VisitStatusId"/>
+                SelectedValuePath="VisitStatusID"/>
 
             <Label Content="Car:"/>
             <ComboBox x:Name="CarComboBox" 
-                SelectedValue="{Binding SelectedVisit.CarId}" 
+                SelectedValue="{Binding SelectedVisit.CarID}" 
                 ItemsSource="{Binding Cars}" 
-                DisplayMemberPath="Vin" 
-                SelectedValuePath="CarId"/>
+                DisplayMemberPath="VIN" 
+                SelectedValuePath="CarID"/>
 
             <Label Content="Employee:"/>
             <ComboBox x:Name="EmployeeComboBox" 
-                SelectedValue="{Binding SelectedVisit.EmployeeId}" 
+                SelectedValue="{Binding SelectedVisit.EmployeeID}" 
                 ItemsSource="{Binding Employees}" 
                 DisplayMemberPath="FirstName" 
-                SelectedValuePath="EmployeeId"/>
+                SelectedValuePath="EmployeeID"/>
 
             <Label Content="Payment Status:"/>
             <ComboBox x:Name="PaymentStatusComboBox" 
-                SelectedValue="{Binding SelectedVisit.PaymentStatusId}" 
+                SelectedValue="{Binding SelectedVisit.PaymentStatusID}" 
                 ItemsSource="{Binding PaymentStatuses}" 
                 DisplayMemberPath="PaymentName" 
-                SelectedValuePath="PaymentStatusId"/>
+                SelectedValuePath="PaymentStatusID"/>
 
             <Label Content="Visit Date:"/>
             <DatePicker x:Name="VisitDatePicker" SelectedDate="{Binding SelectedVisit.VisitDate}"/>

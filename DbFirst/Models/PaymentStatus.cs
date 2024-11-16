@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abstraction.ModelInterfaces;
+
 
 namespace DbFirst.Models;
 
-public partial class PaymentStatus
+public partial class PaymentStatus: IPaymentStatus
 {
-    public int PaymentStatusId { get; set; }
+    public int PaymentStatusID { get; set; }
 
     public string PaymentName { get; set; } = null!;
 

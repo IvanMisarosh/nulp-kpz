@@ -3,56 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abstraction;
 using DbFirst.Models;
+using Abstraction.ModelInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace DbFirst.Repositories
 {
 
-    public class CarRepository: IRepository<Car>
+    public class CarRepository : IRepository<ICar>
     {
-        private CarServiceKpzContext _context;
+        private readonly CarServiceKpzContext _context;
 
         public CarRepository(CarServiceKpzContext context)
         {
             _context = context;
         }
 
-        public List<Car> GetAll()
+        public List<ICar> GetAll()
         {
-            //return _context.Cars.ToList();
             return _context.Cars
-            .Include(car => car.CarModel)  // Include CarModel
-            .Include(car => car.Color)      // Include Color
-            .Include(car => car.Customer)   // Include Customer
-            .ToList();
+                .Include(car => car.CarModel)
+                .Include(car => car.Color)
+                .Include(car => car.Customer)
+                .ToList<ICar>();
         }
 
-        public void Add(Car car)
+        public void Add(ICar entity)
         {
-            _context.Cars.Add(car);
+            _context.Cars.Add((Car)entity);
         }
 
-        public void Update(Car car)
+        public void Update(ICar entity)
         {
-            _context.Cars.Update(car);
+            _context.Cars.Update((Car)entity);
         }
 
-        public void Delete(Car car)
+        public void Delete(ICar entity)
         {
-            try
-            {
-                _context.Cars.Remove(car);
-            }
-            catch (Exception e)
-            {
-                var existing = _context.Cars.Find(car.CarId);
-                if (existing != null)
-                {
-                    _context.Cars.Remove(existing);
-                }
-            }
-
+            _context.Cars.Remove((Car)entity);
         }
 
         public void SaveChanges()

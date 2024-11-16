@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbFirst.Repositories
+namespace Abstraction
 {
     public interface IRepository<T>
     {

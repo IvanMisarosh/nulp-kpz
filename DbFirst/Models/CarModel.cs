@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using Abstraction.ModelInterfaces;
 
 namespace DbFirst.Models;
 
-public partial class CarModel
+public partial class CarModel : ICarModel
 {
-    public int CarModelId { get; set; }
+    public int CarModelID { get; set; }
 
     public string ModelName { get; set; } = null!;
 
     public string? Dimensions { get; set; }
 
-    public int? DriveTypeId { get; set; }
+    public int? DriveTypeID { get; set; }
 
-    public int? CarBrandId { get; set; }
+    public int? CarBrandID { get; set; }
 
-    public int? SuspensionTypeId { get; set; }
+    public int? SuspensionTypeID { get; set; }
 
-    public int? TransmissionTypeId { get; set; }
+    public int? TransmissionTypeID { get; set; }
 
-    public int? EngineTypeId { get; set; }
+    public int? EngineTypeID { get; set; }
 
-    public int? BodyTypeId { get; set; }
+    public int? BodyTypeID { get; set; }
 
     public virtual BodyType? BodyType { get; set; }
 
