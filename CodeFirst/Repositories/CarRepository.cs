@@ -63,5 +63,10 @@ namespace CodeFirst.Repositories
         {
             _context.SaveChanges();
         }
+
+        public ICar GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

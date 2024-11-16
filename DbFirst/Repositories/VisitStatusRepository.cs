@@ -33,6 +33,11 @@ namespace DbFirst.Repositories
             return _context.VisitStatuses.ToList<IVisitStatus>();
         }
 
+        public IVisitStatus GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             throw new NotImplementedException();

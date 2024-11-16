@@ -54,5 +54,10 @@ namespace CodeFirst.Repositories
         {
             _context.SaveChanges();
         }
+
+        public ICustomer GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

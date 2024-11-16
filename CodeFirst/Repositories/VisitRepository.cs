@@ -57,5 +57,10 @@ namespace CodeFirst.Repositories
         {
             _context.SaveChanges();
         }
+
+        public IVisit GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -49,6 +49,11 @@ namespace DbFirst.Repositories
             return _context.CarModels.Cast<ICarModel>().ToList();
         }
 
+        public ICarModel GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

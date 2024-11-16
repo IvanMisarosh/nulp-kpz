@@ -33,6 +33,11 @@ namespace CodeFirst.Repositories
             return _context.Colors.ToList<IColor>();
         }
 
+        public IColor GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             throw new NotImplementedException();

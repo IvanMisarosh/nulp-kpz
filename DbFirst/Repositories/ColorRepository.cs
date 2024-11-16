@@ -49,6 +49,11 @@ namespace DbFirst.Repositories
             return _context.Colors.Cast<IColor>().ToList();
         }
 
+        public IColor GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             _context.SaveChanges();

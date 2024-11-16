@@ -2,19 +2,38 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace DbFirst.Models;
 
 public partial class CarServiceKpzContext : DbContext
 {
+    private readonly IConfiguration _configuration;
+
     public CarServiceKpzContext()
     {
     }
 
-    public CarServiceKpzContext(DbContextOptions<CarServiceKpzContext> options)
+    public CarServiceKpzContext(DbContextOptions<CarServiceKpzContext> options, IConfiguration configuration)
         : base(options)
     {
+        _configuration = configuration;
     }
+
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    if (!optionsBuilder.IsConfigured)
+    //    {
+    //        // Get connection string from appsettings.json
+    //        var connectionString = _configuration.GetConnectionString("DefaultConnection");
+    //        optionsBuilder.UseSqlServer(connectionString);
+    //    }
+    //}
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=car_service_kpz;Trusted_Connection=True;TrustServerCertificate=True;");
+    
 
     public virtual DbSet<BodyType> BodyTypes { get; set; }
 
@@ -65,15 +84,6 @@ public partial class CarServiceKpzContext : DbContext
     public virtual DbSet<VisitService> VisitServices { get; set; }
 
     public virtual DbSet<VisitStatus> VisitStatuses { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=car_service_kpz;Trusted_Connection=True;TrustServerCertificate=True;");
-
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

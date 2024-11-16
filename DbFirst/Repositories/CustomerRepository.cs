@@ -21,6 +21,11 @@ namespace DbFirst.Repositories
             return _context.Customers.ToList<ICustomer>();
         }
 
+        public ICustomer GetById(int id)
+        {
+            return _context.Customers.Find(id);
+        }
+
         public void Add(ICustomer customer)
         {
             _context.Customers.Add((Customer)customer);

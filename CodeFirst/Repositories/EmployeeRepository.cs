@@ -33,6 +33,11 @@ namespace CodeFirst.Repositories
             return _context.Employees.ToList<IEmployee>();
         }
 
+        public IEmployee GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             throw new NotImplementedException();

@@ -33,6 +33,11 @@ namespace CodeFirst.Repositories
             return _context.VisitStatus.ToList<IVisitStatus>();
         }
 
+        public IVisitStatus GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             throw new NotImplementedException();

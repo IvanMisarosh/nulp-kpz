@@ -33,6 +33,10 @@ namespace CodeFirst.Repositories
             return _context.CarModels.ToList<ICarModel>();
         }
 
+        public ICarModel GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
 
         public void SaveChanges()
         {

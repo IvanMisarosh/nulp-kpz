@@ -33,6 +33,11 @@ namespace DbFirst.Repositories
             return _context.PaymentStatuses.ToList<IPaymentStatus>();
         }
 
+        public IPaymentStatus GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             throw new NotImplementedException();

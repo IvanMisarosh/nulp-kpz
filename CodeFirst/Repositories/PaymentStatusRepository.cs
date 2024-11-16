@@ -34,6 +34,11 @@ namespace CodeFirst.Repositories
             return _context.PaymentStatus.ToList<IPaymentStatus>();
         }
 
+        public IPaymentStatus GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveChanges()
         {
             throw new NotImplementedException();
