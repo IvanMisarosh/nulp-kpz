@@ -2,26 +2,26 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using DbFirst.Models;
+//using DbFirst.Models;
 //using CodeFirst.Models;
 using lab_3.InfoWindows;
 using lab_3.Command;
 using System.Windows;
 using Abstraction;
+using Abstraction.ModelInterfaces;
 
 namespace lab_3.ViewModels
 {
     public class VisitViewModel : INotifyPropertyChanged
     {
-        public ObservableCollection<Visit> Visits { get; set; }
+        public ObservableCollection<IVisit> Visits { get; set; }
 
-        private Visit _selectedVisit;
-        private Visit _editableVisit;
+        private IVisit _selectedVisit;
+        private IVisit _editableVisit;
         private VisitInfoWindow _visitInfoWindow;
-        public CarServiceKpzContext Context { get; set; }
         public IRepositoryFactory RepositoryFactory { get; set; }
 
-        public Visit SelectedVisit
+        public IVisit SelectedVisit
         {
             get => _selectedVisit;
             set
@@ -40,7 +40,7 @@ namespace lab_3.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private readonly IRepository<Visit> _visitRepository;
+        private readonly IRepository<IVisit> _visitRepository;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -52,7 +52,7 @@ namespace lab_3.ViewModels
         {
             RepositoryFactory = factory;
             //Context = context;
-            _visitRepository = factory.GetRepository<Visit>();
+            _visitRepository = factory.GetRepository<IVisit>();
             UpdateVisitList();
 
             AddCommand = new RelayCommand(AddVisit);
@@ -65,7 +65,7 @@ namespace lab_3.ViewModels
 
         public void AddVisit(object parameter)
         {
-            SelectedVisit = new Visit();
+            SelectedVisit = RepositoryFactory.CreateVisit();
             OpenVisitInfoWindow();
         }
 
@@ -84,10 +84,10 @@ namespace lab_3.ViewModels
             //    this);
 
             _visitInfoWindow = new VisitInfoWindow(
-                RepositoryFactory.GetRepository<VisitStatus>(),
-                RepositoryFactory.GetRepository<Car>(),
-                RepositoryFactory.GetRepository<Employee>(),
-                RepositoryFactory.GetRepository<PaymentStatus>(),
+                RepositoryFactory.GetRepository<IVisitStatus>(),
+                RepositoryFactory.GetRepository<ICar>(),
+                RepositoryFactory.GetRepository<IEmployee>(),
+                RepositoryFactory.GetRepository<IPaymentStatus>(),
                 this);
             _visitInfoWindow.Show();
         }
@@ -164,7 +164,7 @@ namespace lab_3.ViewModels
         {
             if (Visits == null)
             {
-                Visits = new ObservableCollection<Visit>();
+                Visits = new ObservableCollection<IVisit>();
             }
 
             Visits.Clear();

@@ -7,52 +7,21 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl Margin="5">
-            <TabItem Header="Customers" DataContext="{Binding CustomerViewModel}">
-                <DockPanel>
+            <TabItem Header="Cars">
+                <DockPanel DataContext="{Binding CarViewModel}">
                     <StackPanel DockPanel.Dock="Bottom" 
                           Orientation="Horizontal" 
                           HorizontalAlignment="Center" 
                           Margin="0,10,0,10">
-                        <Button Content="Add Customer" Command="{Binding AddCommand}"/>
-                        <Button Content="Update Customer" Command="{Binding UpdateCommand}"/>
-                        <Button Content="Delete Customer" Command="{Binding DeleteCommand}"/>
-                    </StackPanel>
-
-                    <!--<DataGrid ItemsSource="{Binding Customers}" 
-                        SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" 
-                        AutoGenerateColumns="True">
-                    </DataGrid>-->
-
-                    <DataGrid ItemsSource="{Binding Customers}" Margin="10" 
-                      SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" 
-                      AutoGenerateColumns="False">  
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Customer ID" Binding="{Binding CustomerID}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" />
-                            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
-                            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}" />
-                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" />
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </DockPanel>
-            </TabItem>
-
-            <!-- Cars Tab -->
-            <TabItem Header="Cars">
-                <DockPanel>
-                    <StackPanel DockPanel.Dock="Bottom" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center" 
-                    Margin="0,10,0,10">
                         <Button Content="Add Car" Command="{Binding AddCommand}" Margin="5"/>
                         <Button Content="Update Car" Command="{Binding UpdateCommand}" Margin="5"/>
                         <Button Content="Delete Car" Command="{Binding DeleteCommand}" Margin="5"/>
                     </StackPanel>
                     <DataGrid ItemsSource="{Binding Cars}" 
-                  SelectedItem="{Binding SelectedCar, Mode=TwoWay}" 
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  Margin="10">
+                         SelectedItem="{Binding SelectedCar, Mode=TwoWay}" 
+                         AutoGenerateColumns="False"
+                         IsReadOnly="True"
+                         Margin="10">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Car ID" Binding="{Binding CarID}"/>
                             <DataGridTextColumn Header="Model Name" Binding="{Binding CarModel.ModelName}"/>
@@ -67,8 +36,35 @@
                 </DockPanel>
             </TabItem>
 
+            <!-- Customers Tab -->
+            <TabItem Header="Customers">
+                <DockPanel DataContext="{Binding CustomerViewModel}">
+                    <StackPanel DockPanel.Dock="Bottom" 
+                          Orientation="Horizontal" 
+                          HorizontalAlignment="Center" 
+                          Margin="0,10,0,10">
+                        <Button Content="Add Customer" Command="{Binding AddCommand}" Margin="5"/>
+                        <Button Content="Update Customer" Command="{Binding UpdateCommand}" Margin="5"/>
+                        <Button Content="Delete Customer" Command="{Binding DeleteCommand}" Margin="5"/>
+                    </StackPanel>
+                    <DataGrid ItemsSource="{Binding Customers}" 
+                         SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" 
+                         AutoGenerateColumns="False"
+                         IsReadOnly="True"
+                         Margin="10">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CustomerID}"/>
+                            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
+                            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
+                            <DataGridTextColumn Header="Phone" Binding="{Binding PhoneNumber}"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+
             <TabItem Header="Visits" >
-                <DockPanel>
+                <DockPanel DataContext="{Binding VisitViewModel}">
                     <StackPanel DockPanel.Dock="Bottom" 
                        Orientation="Horizontal" 
                        HorizontalAlignment="Center" 

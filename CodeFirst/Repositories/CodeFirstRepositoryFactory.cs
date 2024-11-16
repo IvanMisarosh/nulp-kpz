@@ -18,7 +18,17 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
+        public IVisit CreateVisit()
+        {
+            throw new NotImplementedException();
+        }
+
         public ICar CreateCar()
+        {
+            throw new NotImplementedException();
+        }
+
+        public ICustomer CreateCustomer()
         {
             throw new NotImplementedException();
         }

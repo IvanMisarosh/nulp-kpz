@@ -1,41 +1,42 @@
 ﻿using Abstraction;
 using DbFirst.Models;
 using Microsoft.EntityFrameworkCore;
+using Abstraction.ModelInterfaces;
 
 namespace DbFirst.Repositories
 {
-    public class VisitRepository: IRepository<Visit>
+    public class VisitRepository: IRepository<IVisit>
     {
         private CarServiceKpzContext _context;
         public VisitRepository(CarServiceKpzContext context)
         {
             _context = context;
         }
-        public List<Visit> GetAll()
+        public List<IVisit> GetAll()
         {
             //return _context.Visits.ToList();
             return _context.Visits.
                 Include(v => v.Car).
                 Include(v => v.Employee).
                 Include(v => v.PaymentStatus).
-                Include(v => v.VisitStatus).ToList();
+                Include(v => v.VisitStatus).ToList<IVisit>();
         }
 
-        public void Add(Visit visit)
+        public void Add(IVisit visit)
         {
-            _context.Visits.Add(visit);
+            _context.Visits.Add((Visit)visit);
         }
 
-        public void Update(Visit visit)
+        public void Update(IVisit visit)
         {
-            _context.Visits.Update(visit);
+            _context.Visits.Update((Visit)visit);
         }
 
-        public void Delete(Visit visit)
+        public void Delete(IVisit visit)
         {
             try
             {
-                _context.Visits.Remove(visit);
+                _context.Visits.Remove((Visit)visit);
             }
             catch (Exception e)
             {

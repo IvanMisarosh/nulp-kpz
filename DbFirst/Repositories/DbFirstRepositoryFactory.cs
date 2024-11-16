@@ -56,5 +56,15 @@ namespace DbFirst.Repositories
             return new Car(); // Повертаємо конкретну реалізацію
         }
 
+        public ICustomer CreateCustomer()
+        {
+            return new Customer(); // Повертаємо конкретну реалізацію
+        }
+
+        public IVisit CreateVisit()
+        {
+            return new Visit(); // Повертаємо конкретну реалізацію
+
+        }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using lab_3.Command;
-using DbFirst.Models;
+//using DbFirst.Models;
 //using CodeFirst.Models;
 using lab_3.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using Abstraction;  
+using Abstraction.ModelInterfaces;
 
 
 namespace lab_3.InfoWindows
@@ -15,18 +16,18 @@ namespace lab_3.InfoWindows
     /// </summary>
     public partial class VisitInfoWindow : Window
     {
-        public ObservableCollection<VisitStatus> VisitStatuses { get; set; }
-        public ObservableCollection<Car> Cars { get; set; }
-        public ObservableCollection<Employee> Employees { get; set; }
-        public ObservableCollection<PaymentStatus> PaymentStatuses { get; set; }
-        public Visit SelectedVisit { get; set; }
+        public ObservableCollection<IVisitStatus> VisitStatuses { get; set; }
+        public ObservableCollection<ICar> Cars { get; set; }
+        public ObservableCollection<IEmployee> Employees { get; set; }
+        public ObservableCollection<IPaymentStatus> PaymentStatuses { get; set; }
+        public IVisit SelectedVisit { get; set; }
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private IRepository<VisitStatus> _visitStatusRepository;
-        private IRepository<Car> _carRepository;
-        private IRepository<Employee> _employeeRepository;
-        private IRepository<PaymentStatus> _paymentStatusRepository;
+        private IRepository<IVisitStatus> _visitStatusRepository;
+        private IRepository<ICar> _carRepository;
+        private IRepository<IEmployee> _employeeRepository;
+        private IRepository<IPaymentStatus> _paymentStatusRepository;
         private VisitViewModel _viewModel;
 
         public VisitInfoWindow()
@@ -35,10 +36,10 @@ namespace lab_3.InfoWindows
         }
 
         public VisitInfoWindow(
-            IRepository<VisitStatus> visitStatusRepository,
-            IRepository<Car> carRepository,
-            IRepository<Employee> employeeRepository,
-            IRepository<PaymentStatus> paymentStatusRepository,
+            IRepository<IVisitStatus> visitStatusRepository,
+            IRepository<ICar> carRepository,
+            IRepository<IEmployee> employeeRepository,
+            IRepository<IPaymentStatus> paymentStatusRepository,
             VisitViewModel viewModel)
         {
             InitializeComponent();
@@ -49,10 +50,10 @@ namespace lab_3.InfoWindows
             _viewModel = viewModel;
             SelectedVisit = viewModel.SelectedVisit;
 
-            VisitStatuses = new ObservableCollection<VisitStatus>(_visitStatusRepository.GetAll());
-            Cars = new ObservableCollection<Car>(_carRepository.GetAll());
-            Employees = new ObservableCollection<Employee>(_employeeRepository.GetAll());
-            PaymentStatuses = new ObservableCollection<PaymentStatus>(_paymentStatusRepository.GetAll());
+            VisitStatuses = new ObservableCollection<IVisitStatus>(_visitStatusRepository.GetAll());
+            Cars = new ObservableCollection<ICar>(_carRepository.GetAll());
+            Employees = new ObservableCollection<IEmployee>(_employeeRepository.GetAll());
+            PaymentStatuses = new ObservableCollection<IPaymentStatus>(_paymentStatusRepository.GetAll());
 
             SaveCommand = new RelayCommand(o =>
             {

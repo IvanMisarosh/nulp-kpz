@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstraction;
+using Abstraction.ModelInterfaces;
 using DbFirst.Models;
 
 namespace DbFirst.Repositories
 {
-    public class PaymentStatusRepository : IRepository<PaymentStatus>
+    public class PaymentStatusRepository : IRepository<IPaymentStatus>
     {
         private CarServiceKpzContext _context;
 
@@ -17,19 +18,19 @@ namespace DbFirst.Repositories
             _context = context;
         }
 
-        public void Add(PaymentStatus entity)
+        public void Add(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(PaymentStatus entity)
+        public void Delete(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<PaymentStatus> GetAll()
+        public List<IPaymentStatus> GetAll()
         {
-            return _context.PaymentStatuses.ToList();
+            return _context.PaymentStatuses.ToList<IPaymentStatus>();
         }
 
         public void SaveChanges()
@@ -37,7 +38,7 @@ namespace DbFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(PaymentStatus entity)
+        public void Update(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }

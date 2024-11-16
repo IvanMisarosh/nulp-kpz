@@ -11,9 +11,6 @@ using Abstraction.ModelInterfaces;
 
 namespace lab_3
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         private ServiceProvider _serviceProvider;
@@ -22,14 +19,19 @@ namespace lab_3
         {
             var services = new ServiceCollection();
 
+            // Register your services
             services.AddSingleton<CarServiceKpzContext>();
             services.AddSingleton<IRepositoryFactory, DbFirstRepositoryFactory>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             // Register your ViewModels
             services.AddTransient<CarViewModel>();
-            //services.AddTransient<CustomerViewModel>();
-            //services.AddTransient<VisitViewModel>();
+            services.AddTransient<CustomerViewModel>();
+            services.AddTransient<VisitViewModel>();
+
+            // Register MainViewModel
+            services.AddTransient<MainViewModel>();
+
             _serviceProvider = services.BuildServiceProvider();
         }
 
@@ -37,10 +39,9 @@ namespace lab_3
         {
             var mainWindow = new MainWindow
             {
-                DataContext = _serviceProvider.GetService<CarViewModel>()
+                DataContext = _serviceProvider.GetService<MainViewModel>()
             };
             mainWindow.Show();
         }
     }
-
 }

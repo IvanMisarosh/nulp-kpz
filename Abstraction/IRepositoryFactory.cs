@@ -14,5 +14,8 @@ namespace Abstraction
         T CreateNew<T>() where T : class, new();
 
         ICar CreateCar();
+        ICustomer CreateCustomer();
+
+        IVisit CreateVisit();
     }
 }
