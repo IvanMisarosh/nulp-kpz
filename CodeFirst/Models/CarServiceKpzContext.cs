@@ -240,7 +240,7 @@ namespace CodeFirst.Models
 
             modelBuilder.Entity<VisitStatus>()
                 .HasMany(e => e.Visits)
-                .WithRequired(e => e.VisitStatu)
+                .WithRequired(e => e.VisitStatus)
                 .WillCascadeOnDelete(false);
         }
     }

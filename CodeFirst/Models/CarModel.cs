@@ -1,3 +1,5 @@
+using Abstraction.ModelInterfaces;
+
 namespace CodeFirst.Models
 {
     using System;
@@ -7,7 +9,7 @@ namespace CodeFirst.Models
     using System.Data.Entity.Spatial;
 
     [Table("CarModel")]
-    public partial class CarModel
+    public partial class CarModel : ICarModel
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CarModel()

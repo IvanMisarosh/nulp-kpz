@@ -1,3 +1,5 @@
+using Abstraction.ModelInterfaces;
+
 namespace CodeFirst.Models
 {
     using System;
@@ -6,7 +8,7 @@ namespace CodeFirst.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class VisitStatus
+    public partial class VisitStatus : IVisitStatus
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VisitStatus()

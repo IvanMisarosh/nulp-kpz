@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Abstraction;
 using CodeFirst.Models;
+using Abstraction.ModelInterfaces;
 
 namespace CodeFirst.Repositories
 {
-    public class PaymentStatusRepository : IRepository<PaymentStatus>
+    public class PaymentStatusRepository : IRepository<IPaymentStatus>
     {
         private CarServiceKpzContext _context;
 
@@ -17,20 +18,20 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public void Add(PaymentStatus entity)
+        public void Add(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(PaymentStatus entity)
+        public void Delete(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<PaymentStatus> GetAll()
+        public List<IPaymentStatus> GetAll()
         {
             //return _context.PaymentStatuses.ToList();
-            return _context.PaymentStatus.ToList();
+            return _context.PaymentStatus.ToList<IPaymentStatus>();
         }
 
         public void SaveChanges()
@@ -38,7 +39,7 @@ namespace CodeFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(PaymentStatus entity)
+        public void Update(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }

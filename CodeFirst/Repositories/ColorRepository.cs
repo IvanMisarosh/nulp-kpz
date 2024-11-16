@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CodeFirst.Models;
 using Abstraction;
+using Abstraction.ModelInterfaces;
 
 namespace CodeFirst.Repositories
 {
-    public class ColorRepository: IRepository<Color>
+    public class ColorRepository: IRepository<IColor>
     {
         private CarServiceKpzContext _context;
 
@@ -17,19 +18,19 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public void Add(Color entity)
+        public void Add(IColor entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Color entity)
+        public void Delete(IColor entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<Color> GetAll()
+        public List<IColor> GetAll()
         {
-            return _context.Colors.ToList();
+            return _context.Colors.ToList<IColor>();
         }
 
         public void SaveChanges()
@@ -37,7 +38,7 @@ namespace CodeFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(Color entity)
+        public void Update(IColor entity)
         {
             throw new NotImplementedException();
         }

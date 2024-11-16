@@ -2,8 +2,6 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-//using DbFirst.Models;
-//using CodeFirst.Models;
 using lab_3.InfoWindows;
 using lab_3.Command;
 using System.Windows;
@@ -75,13 +73,6 @@ namespace lab_3.ViewModels
             {
                 _visitInfoWindow.Close();
             }
-
-            //_visitInfoWindow = new VisitInfoWindow(
-            //    new VisitStatusRepository(Context),
-            //    new CarRepository(Context),
-            //    new EmployeeRepository(Context),
-            //    new PaymentStatusRepository(Context),
-            //    this);
 
             _visitInfoWindow = new VisitInfoWindow(
                 RepositoryFactory.GetRepository<IVisitStatus>(),

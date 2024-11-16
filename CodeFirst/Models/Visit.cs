@@ -1,3 +1,5 @@
+using Abstraction.ModelInterfaces;
+
 namespace CodeFirst.Models
 {
     using System;
@@ -7,7 +9,7 @@ namespace CodeFirst.Models
     using System.Data.Entity.Spatial;
 
     [Table("Visit")]
-    public partial class Visit
+    public partial class Visit : IVisit
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Visit()
@@ -44,9 +46,9 @@ namespace CodeFirst.Models
 
         public virtual Employee Employee { get; set; }
 
-        public virtual PaymentStatus PaymentStatu { get; set; }
+        public virtual PaymentStatus PaymentStatus { get; set; }
 
-        public virtual VisitStatus VisitStatu { get; set; }
+        public virtual VisitStatus VisitStatus { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VisitService> VisitServices { get; set; }

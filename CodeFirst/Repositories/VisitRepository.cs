@@ -1,4 +1,5 @@
 ﻿using Abstraction;
+using Abstraction.ModelInterfaces;
 using CodeFirst.Models;
 using System;
 using System.Collections.Generic;
@@ -6,14 +7,14 @@ using System.Linq;
 
 namespace CodeFirst.Repositories
 {
-    public class VisitRepository: IRepository<Visit>
+    public class VisitRepository: IRepository<IVisit>
     {
         private CarServiceKpzContext _context;
         public VisitRepository(CarServiceKpzContext context)
         {
             _context = context;
         }
-        public List<Visit> GetAll()
+        public List<IVisit> GetAll()
         {
             //return _context.Visits.ToList();
             return _context.Visits.
@@ -21,26 +22,26 @@ namespace CodeFirst.Repositories
                 Include("Employee").
                 Include("PaymentStatus").
                 Include("VisitStatus").
-                ToList();
+                ToList<IVisit>();
         }
 
-        public void Add(Visit visit)
+        public void Add(IVisit visit)
         {
-            _context.Visits.Add(visit);
+            _context.Visits.Add((Visit)visit);
         }
 
-        public void Update(Visit visit)
+        public void Update(IVisit visit)
         {
             //_context.Visits.Update(visit);
-            _context.Entry(visit).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry((Visit)visit).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public void Delete(Visit visit)
+        public void Delete(IVisit visit)
         {
             try
             {
-                _context.Visits.Remove(visit);
+                _context.Visits.Remove((Visit)visit);
             }
             catch (Exception e)
             {

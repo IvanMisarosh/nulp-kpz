@@ -20,46 +20,44 @@ namespace CodeFirst.Repositories
 
         public IVisit CreateVisit()
         {
-            throw new NotImplementedException();
+            return new Visit();
         }
 
         public ICar CreateCar()
         {
-            throw new NotImplementedException();
+            return new Car();
         }
 
         public ICustomer CreateCustomer()
         {
-            throw new NotImplementedException();
-        }
-
-        public T CreateNew<T>() where T : class, new()
-        {
-            throw new NotImplementedException();
+            return new Customer();
         }
 
         public IRepository<T> GetRepository<T>() where T : class
         {
-            if (typeof(T) == typeof(Car))
+            if (typeof(T) == typeof(ICar))
                 return (IRepository<T>)new CarRepository(_context);
 
-            if (typeof(T) == typeof(CarModel))
+            if (typeof(T) == typeof(ICarModel))
                 return (IRepository<T>)new CarModelRepository(_context);
 
-            if (typeof(T) == typeof(Customer))
+            if (typeof(T) == typeof(ICustomer))
                 return (IRepository<T>)new CustomerRepository(_context);
 
-            if (typeof(T) == typeof(Employee))
+            if (typeof(T) == typeof(IEmployee))
                 return (IRepository<T>)new EmployeeRepository(_context);
 
-            if (typeof(T) == typeof(PaymentStatus))
+            if (typeof(T) == typeof(IPaymentStatus))
                 return (IRepository<T>)new PaymentStatusRepository(_context);
 
-            if (typeof(T) == typeof(Visit))
+            if (typeof(T) == typeof(IVisit))
                 return (IRepository<T>)new VisitRepository(_context);
 
-            if (typeof(T) == typeof(VisitStatus))
+            if (typeof(T) == typeof(IVisitStatus))
                 return (IRepository<T>)new VisitStatusRepository(_context);
+
+            if (typeof(T) == typeof(IColor))
+                return (IRepository<T>)new ColorRepository(_context);
 
             throw new NotSupportedException($"No repository found for type {typeof(T).Name}");
         }

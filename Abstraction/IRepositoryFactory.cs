@@ -11,7 +11,6 @@ namespace Abstraction
     public interface IRepositoryFactory
     {
         IRepository<T> GetRepository<T>() where T : class;
-        T CreateNew<T>() where T : class, new();
 
         ICar CreateCar();
         ICustomer CreateCustomer();

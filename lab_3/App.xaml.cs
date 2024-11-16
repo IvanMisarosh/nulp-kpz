@@ -1,10 +1,11 @@
-﻿using DbFirst.Models;
+﻿//using DbFirst.Models;
 using DbFirst.Repositories;
+using CodeFirst.Models;
+using CodeFirst.Repositories;
 using lab_3.ViewModels;
 using System.Windows;
 using Abstraction;
 using Microsoft.Extensions.DependencyInjection;
-using Abstraction.ModelInterfaces;
 
 //using CodeFirst.Models;
 //using CodeFirst.Repositories;
@@ -21,8 +22,8 @@ namespace lab_3
 
             // Register your services
             services.AddSingleton<CarServiceKpzContext>();
-            services.AddSingleton<IRepositoryFactory, DbFirstRepositoryFactory>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //services.AddSingleton<IRepositoryFactory, DbFirstRepositoryFactory>();
+            services.AddSingleton<IRepositoryFactory, CodeFirstRepositoryFactory>();
 
             // Register your ViewModels
             services.AddTransient<CarViewModel>();

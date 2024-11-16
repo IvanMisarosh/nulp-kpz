@@ -46,11 +46,6 @@ namespace DbFirst.Repositories
             throw new NotSupportedException($"No repository found for type {typeof(T).Name}");
         }
 
-        public T CreateNew<T>() where T : class, new()
-        {
-            return new T();
-        }
-
         public ICar CreateCar()
         {
             return new Car(); // Повертаємо конкретну реалізацію

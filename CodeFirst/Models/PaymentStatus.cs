@@ -1,3 +1,5 @@
+using Abstraction.ModelInterfaces;
+
 namespace CodeFirst.Models
 {
     using System;
@@ -6,7 +8,7 @@ namespace CodeFirst.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class PaymentStatus
+    public partial class PaymentStatus : IPaymentStatus
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PaymentStatus()

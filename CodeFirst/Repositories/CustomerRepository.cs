@@ -1,4 +1,5 @@
 ﻿using Abstraction;
+using Abstraction.ModelInterfaces;
 using CodeFirst.Models;
 using System;
 using System.Collections.Generic;
@@ -6,35 +7,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace CodeFirst.Repositories
 {
-    public class CustomerRepository : IRepository<Customer>
+    public class CustomerRepository : IRepository<ICustomer>
     {
         private CarServiceKpzContext _context;
         public CustomerRepository(CarServiceKpzContext context) 
         {
             _context = context;
         }
-        public List<Customer> GetAll()
+        public List<ICustomer> GetAll()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.ToList<ICustomer>();
         }
 
-        public void Add(Customer customer)
+        public void Add(ICustomer customer)
         {
-            _context.Customers.Add(customer);
+            _context.Customers.Add((Customer)customer);
         }
 
-        public void Update(Customer customer) {
+        public void Update(ICustomer customer) {
             //_context.Customers.Update(customer);
-            _context.Entry(customer).State = System.Data.Entity.EntityState.Modified;
+            _context.Entry((Customer)customer).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
         }
 
-        public void Delete(Customer customer) {
+        public void Delete(ICustomer customer) {
             try 
             {
-                _context.Customers.Attach(customer);
+                _context.Customers.Attach((Customer)customer);
             }
             catch (InvalidOperationException)
             {

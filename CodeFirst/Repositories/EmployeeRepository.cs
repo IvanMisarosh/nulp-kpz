@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstraction;
+using Abstraction.ModelInterfaces;
 using CodeFirst.Models;
 
 namespace CodeFirst.Repositories
 {
-    public class EmployeeRepository : IRepository<Employee>
+    public class EmployeeRepository : IRepository<IEmployee>
     {
         private CarServiceKpzContext _context;
 
@@ -17,19 +18,19 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public void Add(Employee entity)
+        public void Add(IEmployee entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Employee entity)
+        public void Delete(IEmployee entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<Employee> GetAll()
+        public List<IEmployee> GetAll()
         {
-            return _context.Employees.ToList();
+            return _context.Employees.ToList<IEmployee>();
         }
 
         public void SaveChanges()
@@ -37,7 +38,7 @@ namespace CodeFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(Employee entity)
+        public void Update(IEmployee entity)
         {
             throw new NotImplementedException();
         }

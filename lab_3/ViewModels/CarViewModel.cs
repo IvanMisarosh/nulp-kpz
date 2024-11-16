@@ -42,7 +42,6 @@ namespace lab_3.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
         public CarViewModel(IRepositoryFactory factory)
         {
             RepositoryFactory = factory;
