@@ -20,29 +20,33 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public List<ICar> GetAll()
+        public IEnumerable<ICar> GetAll()
         {
             //return _context.Cars.ToList();
             return _context.Cars
                 .Include("CarModel")   // Use string path instead of lambda
                 .Include("Color")      // Use string path instead of lambda
                 .Include("Customer")   // Use string path instead of lambda
-                .ToList<ICar>();
+                .ToList();
         }
 
-        public void Add(ICar car)
+        public bool Add(ICar car)
         {
-            _context.Cars.Add((Car)car);
+            var result = _context.Cars.Add((Car)car);
+            //return result.State == System.Data.Entity.EntityState.Added;
+            return true;
         }
 
-        public void Update(ICar car)
+        public bool Update(ICar car)
         {
             //_context.Cars.Update(car);
             _context.Entry((Car)car).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
+            //TODO: check if the entity was updated
+            return true;
         }
 
-        public void Delete(ICar car)
+        public bool Delete(ICar car)
         {
             try
             {
@@ -56,7 +60,8 @@ namespace CodeFirst.Repositories
                     _context.Cars.Remove(existing);
                 }
             }
-
+            //TODO: check if the entity was deleted
+            return true;
         }
 
         public void SaveChanges()
@@ -66,7 +71,22 @@ namespace CodeFirst.Repositories
 
         public ICar GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Cars
+                .Include("CarModel")   // Use string path instead of lambda
+                .Include("Color")      // Use string path instead of lambda
+                .Include("Customer")   // Use string path instead of lambda
+                .FirstOrDefault(car => car.CarID == id);
+        }
+
+        public bool DeleteById(int id)
+        {
+            var car = _context.Cars.Find(id);
+            if (car != null)
+            {
+                _context.Cars.Remove(car);
+                return true;
+            }
+            return false;
         }
     }
 }

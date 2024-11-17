@@ -6,5 +6,8 @@ namespace Abstraction.ModelInterfaces
 {
     public interface IPaymentStatus
     {
+        int PaymentStatusID { get; set; }
+
+        string PaymentName { get; set; }
     }
 }

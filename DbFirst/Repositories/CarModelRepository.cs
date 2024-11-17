@@ -18,12 +18,13 @@ namespace DbFirst.Repositories
             _context = context;
         }
 
-        public void Add(ICarModel entity)
+        public bool Add(ICarModel entity)
         {
             if (entity is CarModel carModel)
             {
-                _context.CarModels.Add(carModel);
+                var result = _context.CarModels.Add(carModel);
                 SaveChanges();
+                return result.State == Microsoft.EntityFrameworkCore.EntityState.Added;
             }
             else
             {
@@ -31,22 +32,29 @@ namespace DbFirst.Repositories
             }
         }
 
-        public void Delete(ICarModel entity)
+        public bool Delete(ICarModel entity)
         {
             if (entity is CarModel carModel)
             {
                 _context.CarModels.Remove(carModel);
                 SaveChanges();
+                return true;
             }
             else
             {
                 throw new ArgumentException("Invalid entity type");
             }
+
         }
 
-        public List<ICarModel> GetAll()
+        public bool DeleteById(int id)
         {
-            return _context.CarModels.Cast<ICarModel>().ToList();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ICarModel> GetAll()
+        {
+            return _context.CarModels.ToList();
         }
 
         public ICarModel GetById(int id)
@@ -59,12 +67,13 @@ namespace DbFirst.Repositories
             _context.SaveChanges();
         }
 
-        public void Update(ICarModel entity)
+        public bool Update(ICarModel entity)
         {
             if (entity is CarModel carModel)
             {
                 _context.CarModels.Update(carModel);
                 SaveChanges();
+                return true;
             }
             else
             {

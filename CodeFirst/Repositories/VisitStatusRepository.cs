@@ -18,19 +18,24 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public void Add(IVisitStatus entity)
+        public bool Add(IVisitStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(IVisitStatus entity)
+        public bool Delete(IVisitStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<IVisitStatus> GetAll()
+        public bool DeleteById(int id)
         {
-            return _context.VisitStatus.ToList<IVisitStatus>();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IVisitStatus> GetAll()
+        {
+            return _context.VisitStatus.ToList();
         }
 
         public IVisitStatus GetById(int id)
@@ -43,7 +48,7 @@ namespace CodeFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(IVisitStatus entity)
+        public bool Update(IVisitStatus entity)
         {
             throw new NotImplementedException();
         }

@@ -18,20 +18,25 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public void Add(IPaymentStatus entity)
+        public bool Add(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(IPaymentStatus entity)
+        public bool Delete(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<IPaymentStatus> GetAll()
+        public bool DeleteById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IPaymentStatus> GetAll()
         {
             //return _context.PaymentStatuses.ToList();
-            return _context.PaymentStatus.ToList<IPaymentStatus>();
+            return _context.PaymentStatus.ToList();
         }
 
         public IPaymentStatus GetById(int id)
@@ -44,7 +49,7 @@ namespace CodeFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(IPaymentStatus entity)
+        public bool Update(IPaymentStatus entity)
         {
             throw new NotImplementedException();
         }

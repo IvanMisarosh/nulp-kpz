@@ -20,28 +20,31 @@ namespace DbFirst.Repositories
             _context = context;
         }
 
-        public List<ICar> GetAll()
+        public IEnumerable<ICar> GetAll()
         {
             return _context.Cars
                 .Include(car => car.CarModel)
                 .Include(car => car.Color)
                 .Include(car => car.Customer)
-                .ToList<ICar>();
+                .ToList();
         }
 
-        public void Add(ICar entity)
+        public bool Add(ICar entity)
         {
-            _context.Cars.Add((Car)entity);
+            var result = _context.Cars.Add((Car)entity);
+            return result.State == Microsoft.EntityFrameworkCore.EntityState.Added;
         }
 
-        public void Update(ICar entity)
+        public bool Update(ICar entity)
         {
-            _context.Cars.Update((Car)entity);
+            var result = _context.Cars.Update((Car)entity);
+            return result.State == Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
-        public void Delete(ICar entity)
+        public bool Delete(ICar entity)
         {
-            _context.Cars.Remove((Car)entity);
+            var result = _context.Cars.Remove((Car)entity);
+            return result.State == Microsoft.EntityFrameworkCore.EntityState.Deleted;
         }
 
         public void SaveChanges()
@@ -51,7 +54,25 @@ namespace DbFirst.Repositories
 
         public ICar GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Cars
+                .Include(car => car.CarModel)
+                .Include(car => car.Color)
+                .Include(car => car.Customer)
+                .FirstOrDefault(car => car.CarID == id);
+        }
+
+        public bool DeleteById(int id)
+        {
+            var car = GetById(id);
+            if (car != null)
+            {
+                var result = _context.Cars.Remove((Car)car);
+                return result.State == Microsoft.EntityFrameworkCore.EntityState.Deleted;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

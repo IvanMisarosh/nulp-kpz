@@ -12,31 +12,34 @@ namespace DbFirst.Repositories
         {
             _context = context;
         }
-        public List<IVisit> GetAll()
+        public IEnumerable<IVisit> GetAll()
         {
             //return _context.Visits.ToList();
             return _context.Visits.
                 Include(v => v.Car).
                 Include(v => v.Employee).
                 Include(v => v.PaymentStatus).
-                Include(v => v.VisitStatus).ToList<IVisit>();
+                Include(v => v.VisitStatus).ToList();
         }
 
-        public void Add(IVisit visit)
+        public bool Add(IVisit visit)
         {
-            _context.Visits.Add((Visit)visit);
+            var result = _context.Visits.Add((Visit)visit);
+            return result.State == EntityState.Added;
         }
 
-        public void Update(IVisit visit)
+        public bool Update(IVisit visit)
         {
-            _context.Visits.Update((Visit)visit);
+            var result = _context.Visits.Update((Visit)visit);
+            return result.State == EntityState.Modified;
         }
 
-        public void Delete(IVisit visit)
+        public bool Delete(IVisit visit)
         {
             try
             {
-                _context.Visits.Remove((Visit)visit);
+                var result = _context.Visits.Remove((Visit)visit);
+                return result.State == EntityState.Deleted;
             }
             catch (Exception e)
             {
@@ -44,8 +47,10 @@ namespace DbFirst.Repositories
                 if (existing != null)
                 {
                     _context.Visits.Remove(existing);
+                    return true;
                 }
             }
+            return false;
         }
 
         public void SaveChanges()
@@ -55,7 +60,23 @@ namespace DbFirst.Repositories
 
         public IVisit GetById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Visits
+                .Include(v => v.Car)
+                .Include(v => v.Employee)
+                .Include(v => v.PaymentStatus)
+                .Include(v => v.VisitStatus)
+                .FirstOrDefault(v => v.VisitID == id);
+        }
+
+        public bool DeleteById(int id)
+        {
+            var visit = _context.Visits.Find(id);
+            if (visit != null)
+            {
+                _context.Visits.Remove(visit);
+                return true;
+            }
+            return false;
         }
     }
 }

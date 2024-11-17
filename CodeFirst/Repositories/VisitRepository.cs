@@ -14,7 +14,7 @@ namespace CodeFirst.Repositories
         {
             _context = context;
         }
-        public List<IVisit> GetAll()
+        public IEnumerable<IVisit> GetAll()
         {
             //return _context.Visits.ToList();
             return _context.Visits.
@@ -22,22 +22,26 @@ namespace CodeFirst.Repositories
                 Include("Employee").
                 Include("PaymentStatus").
                 Include("VisitStatus").
-                ToList<IVisit>();
+                ToList();
         }
 
-        public void Add(IVisit visit)
+        public bool Add(IVisit visit)
         {
-            _context.Visits.Add((Visit)visit);
+            var result = _context.Visits.Add((Visit)visit);
+            //TODO: check if the entity was added
+            return true;
         }
 
-        public void Update(IVisit visit)
+        public bool Update(IVisit visit)
         {
             //_context.Visits.Update(visit);
             _context.Entry((Visit)visit).State = System.Data.Entity.EntityState.Modified;
             _context.SaveChanges();
+            //TODO: check if the entity was updated
+            return true;
         }
 
-        public void Delete(IVisit visit)
+        public bool Delete(IVisit visit)
         {
             try
             {
@@ -51,6 +55,8 @@ namespace CodeFirst.Repositories
                     _context.Visits.Remove(existing);
                 }
             }
+            //TODO: check if the entity was deleted
+            return true;
         }
 
         public void SaveChanges()
@@ -59,6 +65,11 @@ namespace CodeFirst.Repositories
         }
 
         public IVisit GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteById(int id)
         {
             throw new NotImplementedException();
         }

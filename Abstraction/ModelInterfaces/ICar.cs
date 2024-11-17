@@ -21,5 +21,7 @@ namespace Abstraction.ModelInterfaces
         string VIN { get; set; }
 
         int? Mileage { get; set; }
+
+        //virtual ICarModel CarModel { get; set; }
     }
 }

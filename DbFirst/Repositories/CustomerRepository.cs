@@ -16,9 +16,9 @@ namespace DbFirst.Repositories
         {
             _context = context;
         }
-        public List<ICustomer> GetAll()
+        public IEnumerable<ICustomer> GetAll()
         {
-            return _context.Customers.ToList<ICustomer>();
+            return _context.Customers.ToList();
         }
 
         public ICustomer GetById(int id)
@@ -26,16 +26,18 @@ namespace DbFirst.Repositories
             return _context.Customers.Find(id);
         }
 
-        public void Add(ICustomer customer)
+        public bool Add(ICustomer customer)
         {
-            _context.Customers.Add((Customer)customer);
+            var result = _context.Customers.Add((Customer)customer);
+            return result.State == Microsoft.EntityFrameworkCore.EntityState.Added;
         }
 
-        public void Update(ICustomer customer) {
-            _context.Customers.Update((Customer)customer);
+        public bool Update(ICustomer customer) {
+            var result = _context.Customers.Update((Customer)customer);
+            return result.State == Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
-        public void Delete(ICustomer customer) {
+        public bool Delete(ICustomer customer) {
             try 
             {
                 _context.Customers.Attach((Customer)customer);
@@ -50,11 +52,24 @@ namespace DbFirst.Repositories
                     _context.Customers.Remove(existing);
                 }
             }
+            //TODO: check if the entity is being tracked by the context
+            return true;
         }
 
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public bool DeleteById(int id)
+        {
+            var customer = _context.Customers.Find(id);
+            if (customer != null)
+            {
+                _context.Customers.Remove(customer);
+                return true;
+            }
+            return false;
         }
     }
 }

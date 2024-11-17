@@ -18,19 +18,24 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public void Add(ICarModel entity)
+        public bool Add(ICarModel entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(ICarModel entity)
+        public bool Delete(ICarModel entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<ICarModel> GetAll()
+        public bool DeleteById(int id)
         {
-            return _context.CarModels.ToList<ICarModel>();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ICarModel> GetAll()
+        {
+            return _context.CarModels.ToList();
         }
 
         public ICarModel GetById(int id)
@@ -43,7 +48,7 @@ namespace CodeFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(ICarModel entity)
+        public bool Update(ICarModel entity)
         {
             throw new NotImplementedException();
         }

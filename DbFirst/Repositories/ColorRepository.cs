@@ -18,20 +18,23 @@ namespace DbFirst.Repositories
             _context = context;
         }
 
-        public void Add(IColor entity)
+        public bool Add(IColor entity)
         {
+            bool result = false;
             if (entity is Color color)
             {
-                _context.Colors.Add(color);
+                var res = _context.Colors.Add(color);
+                result = res.State == Microsoft.EntityFrameworkCore.EntityState.Added;
                 SaveChanges();
             }
             else
             {
                 throw new ArgumentException("Invalid entity type");
             }
+            return result;
         }
 
-        public void Delete(IColor entity)
+        public bool Delete(IColor entity)
         {
             if (entity is Color color)
             {
@@ -42,11 +45,18 @@ namespace DbFirst.Repositories
             {
                 throw new ArgumentException("Invalid entity type");
             }
+            //TODO: check if the entity is being tracked by the context
+            return true;
         }
 
-        public List<IColor> GetAll()
+        public bool DeleteById(int id)
         {
-            return _context.Colors.Cast<IColor>().ToList();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IColor> GetAll()
+        {
+            return _context.Colors.ToList();
         }
 
         public IColor GetById(int id)
@@ -59,7 +69,7 @@ namespace DbFirst.Repositories
             _context.SaveChanges();
         }
 
-        public void Update(IColor entity)
+        public bool Update(IColor entity)
         {
             if (entity is Color color)
             {
@@ -70,6 +80,8 @@ namespace DbFirst.Repositories
             {
                 throw new ArgumentException("Invalid entity type");
             }
+            //TODO: check if the entity was updated
+            return true;
         }
     }
 }

@@ -18,19 +18,24 @@ namespace DbFirst.Repositories
             _context = context;
         }
 
-        public void Add(IEmployee entity)
+        public bool Add(IEmployee entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(IEmployee entity)
+        public bool Delete(IEmployee entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<IEmployee> GetAll()
+        public bool DeleteById(int id)
         {
-            return _context.Employees.ToList<IEmployee>();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IEmployee> GetAll()
+        {
+            return _context.Employees.ToList();
         }
 
         public IEmployee GetById(int id)
@@ -43,7 +48,7 @@ namespace DbFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(IEmployee entity)
+        public bool Update(IEmployee entity)
         {
             throw new NotImplementedException();
         }

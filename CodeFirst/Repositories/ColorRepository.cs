@@ -18,19 +18,24 @@ namespace CodeFirst.Repositories
             _context = context;
         }
 
-        public void Add(IColor entity)
+        public bool Add(IColor entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(IColor entity)
+        public bool Delete(IColor entity)
         {
             throw new NotImplementedException();
         }
 
-        public List<IColor> GetAll()
+        public bool DeleteById(int id)
         {
-            return _context.Colors.ToList<IColor>();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<IColor> GetAll()
+        {
+            return _context.Colors.ToList();
         }
 
         public IColor GetById(int id)
@@ -43,9 +48,11 @@ namespace CodeFirst.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(IColor entity)
+        public bool Update(IColor entity)
         {
             throw new NotImplementedException();
         }
+
+
     }
 }
