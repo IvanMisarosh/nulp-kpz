@@ -8,16 +8,27 @@ using Abstraction;
 using Abstraction.ModelInterfaces;
 using lab_3.Command;
 using lab_3.InfoWindows;
+using Newtonsoft.Json;
+using Abstraction.DTOs;
 
 namespace lab_3.ViewModels
 {
-    public class CustomerViewModel : INotifyPropertyChanged
+    public class CustomerViewModel : BaseViewModel
     {
         private readonly IRepository<ICustomer> _customerRepository;
         private ICustomer _selectedCustomer;
         private CustomerInfoWindow _customerInfoWindow;
 
-        public ObservableCollection<ICustomer> Customers { get; set; }
+        private ObservableCollection<ICustomer> _customers;
+        public ObservableCollection<ICustomer> Customers
+        {
+            get => _customers;
+            set
+            {
+                _customers = value;
+                OnPropertyChanged();
+            }
+        }
         public IRepositoryFactory RepositoryFactory { get; }
 
         public ICustomer SelectedCustomer
@@ -40,8 +51,6 @@ namespace lab_3.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public CustomerViewModel(IRepositoryFactory repositoryFactory)
         {
             RepositoryFactory = repositoryFactory ?? throw new ArgumentNullException(nameof(repositoryFactory));
@@ -58,19 +67,14 @@ namespace lab_3.ViewModels
             InitializeCustomers();
         }
 
-        private void InitializeCustomers()
+        private async void InitializeCustomers()
         {
-            try
-            {
-                var customers = _customerRepository.GetAll();
-                Customers = new ObservableCollection<ICustomer>(customers);
-                System.Diagnostics.Debug.WriteLine($"Loaded {Customers.Count} customers from repository");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading customers: {ex.Message}", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            var response = await HttpClient.GetStringAsync($"{ServiceUrl}api/Customer");
+            var customers = JsonConvert.DeserializeObject<List<CustomerDTO>>(response);
+            if (customers is null)
+                return;
+            Customers = new ObservableCollection<ICustomer>(customers);
+
         }
 
         public void AddCustomer(object parameter)
@@ -176,11 +180,6 @@ namespace lab_3.ViewModels
                 MessageBox.Show($"Error updating customer list: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
