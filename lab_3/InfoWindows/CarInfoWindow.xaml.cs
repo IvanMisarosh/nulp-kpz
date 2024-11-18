@@ -5,6 +5,11 @@ using Abstraction;
 using Abstraction.ModelInterfaces;
 using lab_3.Command;
 using lab_3.ViewModels;
+using Newtonsoft.Json;
+using System.Net.Http;
+using Abstraction.DTOs;
+using System.Text;
+
 
 namespace lab_3.InfoWindows
 {
@@ -21,9 +26,6 @@ namespace lab_3.InfoWindows
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private readonly IRepository<IColor> _colorRepository;
-        private readonly IRepository<ICarModel> _carModelRepository;
-        private readonly IRepository<ICustomer> _customerRepository;
         private readonly CarViewModel _viewModel;
 
         public CarInfoWindow()
@@ -32,24 +34,39 @@ namespace lab_3.InfoWindows
         }
 
         // Оновлений конструктор з використанням інтерфейсів
-        public CarInfoWindow(
-            IRepository<IColor> colorRepository,
-            IRepository<ICarModel> carModelRepository,
-            IRepository<ICustomer> customerRepository,
-            CarViewModel viewModel)
+        public CarInfoWindow(CarViewModel viewModel)
         {
             InitializeComponent();
 
-            _colorRepository = colorRepository;
-            _carModelRepository = carModelRepository;
-            _customerRepository = customerRepository;
             _viewModel = viewModel;
 
             // Ініціалізація даних
             SelectedCar = viewModel.SelectedCar;
-            Colors = new ObservableCollection<IColor>(_colorRepository.GetAll());
-            CarModels = new ObservableCollection<ICarModel>(_carModelRepository.GetAll());
-            Customers = new ObservableCollection<ICustomer>(_customerRepository.GetAll());
+            var ServiceUrl = BaseViewModel.ServiceUrl;
+            var response = viewModel.HttpClient.GetAsync($"{ServiceUrl}api/Color");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var content = response.Result.Content.ReadAsStringAsync();
+                var colors = JsonConvert.DeserializeObject<List<ColorDTO>>(content.Result);
+                Colors = new ObservableCollection<IColor>(colors);
+            }
+
+            response = viewModel.HttpClient.GetAsync($"{ServiceUrl}api/CarModel");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var content = response.Result.Content.ReadAsStringAsync();
+                var carModels = JsonConvert.DeserializeObject<List<CarModelDTO>>(content.Result);
+                CarModels = new ObservableCollection<ICarModel>(carModels);
+            }
+
+            response = viewModel.HttpClient.GetAsync($"{ServiceUrl}api/Customer");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var content = response.Result.Content.ReadAsStringAsync();
+                var customers = JsonConvert.DeserializeObject<List<CustomerDTO>>(content.Result);
+                Customers = new ObservableCollection<ICustomer>(customers);
+            }
+
 
             // Налаштування команд
             SaveCommand = new RelayCommand(o =>

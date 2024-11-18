@@ -11,8 +11,8 @@ namespace lab_3.ViewModels
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        protected const string ServiceUrl = "http://localhost:5102/";
-        protected readonly HttpClient HttpClient;
+        public const string ServiceUrl = "http://localhost:5102/";
+        public HttpClient HttpClient;
 
         protected BaseViewModel()
         {

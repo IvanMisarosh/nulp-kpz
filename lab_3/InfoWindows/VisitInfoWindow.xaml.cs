@@ -1,12 +1,13 @@
 ﻿using lab_3.Command;
-//using DbFirst.Models;
-//using CodeFirst.Models;
 using lab_3.ViewModels;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using Abstraction;  
 using Abstraction.ModelInterfaces;
+using Abstraction.DTOs;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 
 
 namespace lab_3.InfoWindows
@@ -24,10 +25,6 @@ namespace lab_3.InfoWindows
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private IRepository<IVisitStatus> _visitStatusRepository;
-        private IRepository<ICar> _carRepository;
-        private IRepository<IEmployee> _employeeRepository;
-        private IRepository<IPaymentStatus> _paymentStatusRepository;
         private VisitViewModel _viewModel;
 
         public VisitInfoWindow()
@@ -35,25 +32,50 @@ namespace lab_3.InfoWindows
             InitializeComponent();
         }
 
-        public VisitInfoWindow(
-            IRepository<IVisitStatus> visitStatusRepository,
-            IRepository<ICar> carRepository,
-            IRepository<IEmployee> employeeRepository,
-            IRepository<IPaymentStatus> paymentStatusRepository,
-            VisitViewModel viewModel)
+        public VisitInfoWindow(VisitViewModel viewModel)
         {
             InitializeComponent();
-            _visitStatusRepository = visitStatusRepository;
-            _carRepository = carRepository;
-            _employeeRepository = employeeRepository;
-            _paymentStatusRepository = paymentStatusRepository;
+
             _viewModel = viewModel;
             SelectedVisit = viewModel.SelectedVisit;
 
-            VisitStatuses = new ObservableCollection<IVisitStatus>(_visitStatusRepository.GetAll());
-            Cars = new ObservableCollection<ICar>(_carRepository.GetAll());
-            Employees = new ObservableCollection<IEmployee>(_employeeRepository.GetAll());
-            PaymentStatuses = new ObservableCollection<IPaymentStatus>(_paymentStatusRepository.GetAll());
+            var BaseUrl = BaseViewModel.ServiceUrl;
+            var response = viewModel.HttpClient.GetAsync($"{BaseUrl}api/VisitStatus");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var content = response.Result.Content.ReadAsStringAsync();
+                var visitStatuses = JsonConvert.DeserializeObject<List<VisitStatusDTO>>(content.Result);
+                VisitStatuses = new ObservableCollection<IVisitStatus>(visitStatuses);
+            }
+
+            response = viewModel.HttpClient.GetAsync($"{BaseUrl}api/Car");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var content = response.Result.Content.ReadAsStringAsync();
+                var cars = JsonConvert.DeserializeObject<List<CarDTO>>(content.Result);
+                Cars = new ObservableCollection<ICar>(cars);
+            }
+
+            response = viewModel.HttpClient.GetAsync($"{BaseUrl}api/Employee");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var content = response.Result.Content.ReadAsStringAsync();
+                var employees = JsonConvert.DeserializeObject<List<EmployeeDTO>>(content.Result);
+                Employees = new ObservableCollection<IEmployee>(employees);
+            }
+
+            response = viewModel.HttpClient.GetAsync($"{BaseUrl}api/PaymentStatus");
+            if (response.Result.IsSuccessStatusCode)
+            {
+                var content = response.Result.Content.ReadAsStringAsync();
+                var paymentStatuses = JsonConvert.DeserializeObject<List<PaymentStatusDTO>>(content.Result);
+                PaymentStatuses = new ObservableCollection<IPaymentStatus>(paymentStatuses);
+            }
+
+            //VisitStatuses = new ObservableCollection<IVisitStatus>(_visitStatusRepository.GetAll());
+            //Cars = new ObservableCollection<ICar>(_carRepository.GetAll());
+            //Employees = new ObservableCollection<IEmployee>(_employeeRepository.GetAll());
+            //PaymentStatuses = new ObservableCollection<IPaymentStatus>(_paymentStatusRepository.GetAll());
 
             SaveCommand = new RelayCommand(o =>
             {

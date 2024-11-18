@@ -1,25 +1,36 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
-using lab_3.InfoWindows;
-using lab_3.Command;
 using System.Windows;
-using Abstraction;
-using Abstraction.ModelInterfaces;
+using System.Windows.Input;
+using lab_3.Command;
+using lab_3.InfoWindows;
+using Newtonsoft.Json;
+using System.Net.Http;
+using Abstraction.DTOs;
+using System.Text;
 
 namespace lab_3.ViewModels
 {
-    public class VisitViewModel : INotifyPropertyChanged
+    public class VisitViewModel : BaseViewModel
     {
-        public ObservableCollection<IVisit> Visits { get; set; }
+        private ObservableCollection<VisitDTO> _visits;
+        public ObservableCollection<VisitDTO> Visits
+        {
+            get => _visits;
+            set
+            {
+                if (_visits != value)
+                {
+                    _visits = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
-        private IVisit _selectedVisit;
-        private IVisit _editableVisit;
+        private VisitDTO _selectedVisit;
+        private VisitDTO _editableVisit;
         private VisitInfoWindow _visitInfoWindow;
-        public IRepositoryFactory RepositoryFactory { get; set; }
 
-        public IVisit SelectedVisit
+        public VisitDTO SelectedVisit
         {
             get => _selectedVisit;
             set
@@ -38,32 +49,28 @@ namespace lab_3.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private readonly IRepository<IVisit> _visitRepository;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public VisitViewModel()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public VisitViewModel(IRepositoryFactory factory)
-        {
-            RepositoryFactory = factory;
-            //Context = context;
-            _visitRepository = factory.GetRepository<IVisit>();
-            UpdateVisitList();
-
+            LoadVisits();
             AddCommand = new RelayCommand(AddVisit);
             SaveCommand = new RelayCommand(SaveVisit);
             CancelCommand = new RelayCommand(Cancel);
             DeleteCommand = new RelayCommand(DeleteVisit);
             UpdateCommand = new RelayCommand(UpdateVisit);
-            
+        }
+
+        private async void LoadVisits()
+        {
+            var response = await HttpClient.GetStringAsync($"{ServiceUrl}api/Visit");
+            var visits = JsonConvert.DeserializeObject<List<VisitDTO>>(response);
+            if (visits is null)
+                return;
+            Visits = new ObservableCollection<VisitDTO>(visits);
         }
 
         public void AddVisit(object parameter)
         {
-            SelectedVisit = RepositoryFactory.CreateVisit();
+            SelectedVisit = new VisitDTO();
             OpenVisitInfoWindow();
         }
 
@@ -74,41 +81,32 @@ namespace lab_3.ViewModels
                 _visitInfoWindow.Close();
             }
 
-            _visitInfoWindow = new VisitInfoWindow(
-                RepositoryFactory.GetRepository<IVisitStatus>(),
-                RepositoryFactory.GetRepository<ICar>(),
-                RepositoryFactory.GetRepository<IEmployee>(),
-                RepositoryFactory.GetRepository<IPaymentStatus>(),
-                this);
+            _visitInfoWindow = new VisitInfoWindow(this);
             _visitInfoWindow.Show();
         }
 
-        public void SaveVisit(object parameter)
+        public async void SaveVisit(object parameter)
         {
             if (SelectedVisit == null)
             {
                 return;
             }
-            try
-            { 
-                if (SelectedVisit.VisitID == 0)
-                {
-                    GenerateRandomVisitNumber();
-                    _visitRepository.Add(SelectedVisit);
-                }
-                else
-                {
-                    _visitRepository.Update(SelectedVisit);
-                    
-                }
-                
-            }
-            catch (Exception ex)
+
+            if (SelectedVisit.VisitID == 0)
+                GenerateRandomVisitNumber();
+
+            var json = JsonConvert.SerializeObject(SelectedVisit);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+            if (SelectedVisit.VisitID == 0)
             {
-                MessageBox.Show($"An error occurred while saving the visit: {ex.Message}", "Save Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                var response = await HttpClient.PostAsync($"{ServiceUrl}api/Visit", data);
             }
-            _visitRepository.SaveChanges();
-            UpdateVisitList();
+            else
+            {
+                var response = await HttpClient.PutAsync($"{ServiceUrl}api/Visit/{SelectedVisit.VisitID}", data);
+            }
+            LoadVisits();
         }
 
         private void GenerateRandomVisitNumber()
@@ -125,22 +123,19 @@ namespace lab_3.ViewModels
             }
         }
 
-        private void DeleteVisit(object parameter)
+        private async void DeleteVisit(object parameter)
         {
             if (SelectedVisit != null)
             {
-                try
+                var result = MessageBox.Show("Are you sure you want to delete this visit?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
                 {
-                    _visitRepository.Delete(SelectedVisit);
-                    _visitRepository.SaveChanges();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"An error occurred while deleting the visit: {ex.Message}", "Delete Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                    var visitId = SelectedVisit.VisitID;
+                    var response = await HttpClient.DeleteAsync($"{ServiceUrl}api/Visit/{visitId}");
+                    LoadVisits();
                 }
             }
-            UpdateVisitList();
+            
         }
 
         private void UpdateVisit(object parameter)
@@ -149,29 +144,6 @@ namespace lab_3.ViewModels
             {
                 OpenVisitInfoWindow();
             }
-        }
-
-        private void UpdateVisitList()
-        {
-            if (Visits == null)
-            {
-                Visits = new ObservableCollection<IVisit>();
-            }
-
-            Visits.Clear();
-            try
-            {
-                var visits = _visitRepository.GetAll();
-                foreach (var visit in visits)
-                {
-                    Visits.Add(visit);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while updating the visit list: {ex.Message}", "Update Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
         }
 
     }

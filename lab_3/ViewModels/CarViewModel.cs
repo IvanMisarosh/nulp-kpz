@@ -1,22 +1,37 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
-using lab_3.InfoWindows;
-using lab_3.Command;
 using Abstraction;
-using Abstraction.ModelInterfaces;
+using lab_3.Command;
+using lab_3.InfoWindows;
+using Newtonsoft.Json;
+using System.Net.Http;
+using Abstraction.DTOs;
+using System.Text;
+
 
 namespace lab_3.ViewModels
 {
-    public class CarViewModel : INotifyPropertyChanged
+    public class CarViewModel : BaseViewModel
     {
-        public ObservableCollection<ICar> Cars { get; set; }
+        private ObservableCollection<CarDTO> _cars;
+        public ObservableCollection<CarDTO> Cars
+        {
+            get => _cars;
+            set
+            {
+                if (_cars != value)
+                {
+                    _cars = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
-        private ICar _selectedCar;
+
+        private CarDTO _selectedCar;
         private CarInfoWindow CarInfoWindow;
-        public IRepositoryFactory RepositoryFactory { get; set; }
-        public ICar SelectedCar
+        public CarDTO SelectedCar
         {
             get => _selectedCar;
             set
@@ -35,18 +50,10 @@ namespace lab_3.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand CancelCommand { get; set; }
 
-        private readonly IRepository<ICar> _carRepository;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public CarViewModel()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public CarViewModel(IRepositoryFactory factory)
-        {
-            RepositoryFactory = factory;
-            _carRepository = RepositoryFactory.GetRepository<ICar>();
-            Cars = new ObservableCollection<ICar>(_carRepository.GetAll());
+            LoadCars();
 
             AddCommand = new RelayCommand(AddCar);
             SaveCommand = new RelayCommand(SaveCar);
@@ -55,9 +62,19 @@ namespace lab_3.ViewModels
             UpdateCommand = new RelayCommand(UpdateCar);
         }
 
+        private async void LoadCars()
+        {
+            var response = await HttpClient.GetStringAsync($"{ServiceUrl}api/Car");
+            var cars = JsonConvert.DeserializeObject<List<CarDTO>>(response);
+            if (cars is null)
+                return;
+            Cars = new ObservableCollection<CarDTO>(cars);
+
+        }
+
         public void AddCar(object parameter)
         {
-            SelectedCar = RepositoryFactory.CreateCar();
+            SelectedCar = new CarDTO();
             OpenCarInfoWindow();
         }
 
@@ -69,36 +86,28 @@ namespace lab_3.ViewModels
             }
 
             // Використовуємо інтерфейси для передачі в CarInfoWindow
-            CarInfoWindow = new CarInfoWindow(
-                RepositoryFactory.GetRepository<IColor>(),
-                RepositoryFactory.GetRepository<ICarModel>(),
-                RepositoryFactory.GetRepository<ICustomer>(),
-                this);
+            CarInfoWindow = new CarInfoWindow(this);
             CarInfoWindow.Show();
         }
 
 
-        public void SaveCar(object parameter)
+        public async void SaveCar(object parameter)
         {
             if (SelectedCar == null) return;
 
-            try
+            var json = JsonConvert.SerializeObject(SelectedCar);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            if (SelectedCar.CarID == 0)
             {
-                if (SelectedCar.CarID == 0)
-                {
-                    _carRepository.Add(SelectedCar);
-                }
-                else
-                {
-                    _carRepository.Update(SelectedCar);
-                }
-                _carRepository.SaveChanges();
-                UpdateCarList();
+                var response = await HttpClient.PostAsync($"{ServiceUrl}api/Car", content);
             }
-            catch (System.Exception ex)
+            else
             {
-                System.Windows.MessageBox.Show($"Error saving car: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+                var response = await HttpClient.PutAsync($"{ServiceUrl}api/Car/{SelectedCar.CarID}", content);
             }
+
+            LoadCars();
         }
 
         public void Cancel(object parameter)
@@ -106,20 +115,20 @@ namespace lab_3.ViewModels
             CarInfoWindow?.Close();
         }
 
-        private void DeleteCar(object parameter)
+        private async void DeleteCar(object parameter)
         {
             if (SelectedCar == null) return;
 
-            try
+            var result = System.Windows.MessageBox.Show("Are you sure you want to delete this car?",
+                "Confirm Delete", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+
+            if (result == System.Windows.MessageBoxResult.Yes)
             {
-                _carRepository.Delete(SelectedCar);
-                _carRepository.SaveChanges();
-                UpdateCarList();
+                var carId = SelectedCar.CarID;
+                var response = await HttpClient.DeleteAsync($"{ServiceUrl}api/Car/{carId}");
+                LoadCars();
             }
-            catch (System.Exception ex)
-            {
-                System.Windows.MessageBox.Show($"Error deleting car: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
-            }
+
         }
 
         private void UpdateCar(object parameter)
@@ -127,16 +136,6 @@ namespace lab_3.ViewModels
             if (SelectedCar != null)
             {
                 OpenCarInfoWindow();
-            }
-        }
-
-        private void UpdateCarList()
-        {
-            Cars.Clear();
-            var cars = _carRepository.GetAll();
-            foreach (var car in cars)
-            {
-                Cars.Add(car);
             }
         }
     }

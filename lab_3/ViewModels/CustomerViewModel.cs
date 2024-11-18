@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
-using Abstraction;
 using lab_3.Command;
 using lab_3.InfoWindows;
 using Newtonsoft.Json;
@@ -47,7 +46,7 @@ namespace lab_3.ViewModels
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public CustomerViewModel(IRepositoryFactory repositoryFactory)
+        public CustomerViewModel()
         {
 
             // Initialize commands
@@ -112,7 +111,7 @@ namespace lab_3.ViewModels
             _customerInfoWindow.Show();
         }
 
-        private void DeleteCustomer(object parameter)
+        private async void DeleteCustomer(object parameter)
         {
             if (SelectedCustomer == null) return;
 
@@ -123,7 +122,7 @@ namespace lab_3.ViewModels
             if (result == MessageBoxResult.Yes)
             {
                 var customerId = SelectedCustomer.CustomerID;
-                var response = HttpClient.DeleteAsync($"{ServiceUrl}api/Customer/{customerId}");
+                var response = await HttpClient.DeleteAsync($"{ServiceUrl}api/Customer/{customerId}");
                 LoadCustomers();
             }
         }
