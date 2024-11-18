@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lab_3", "lab_3\lab_3.csproj", "{51AA666A-7D32-4AD7-9272-08FE30180EE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wpf", "lab_3\Wpf.csproj", "{51AA666A-7D32-4AD7-9272-08FE30180EE3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbFirst", "DbFirst\DbFirst.csproj", "{0E743ED6-DA78-4626-8DBD-2AB3DAA17BC3}"
 EndProject
@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstraction", "Abstraction\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{66ECC688-8F08-4415-AC63-7E916A8800ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{EC736D9C-D504-4FFE-912D-ECC46D562A8A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{EC736D9C-D504-4FFE-912D-ECC46D562A8A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
