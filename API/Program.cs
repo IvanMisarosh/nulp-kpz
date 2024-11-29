@@ -1,8 +1,10 @@
 using DbFirst.Models;
+//using CodeFirst1.Models;
 using Abstraction.ModelInterfaces;
 using Abstraction;
 using Microsoft.EntityFrameworkCore;
 using DbFirst.Repositories;
+//using CodeFirst1.Repositories;
 using Abstraction.DTOs;
 using BLL.Services;
 using BLL.Mappers;
@@ -36,7 +38,20 @@ builder.Services.AddScoped<IService<CarModelDTO>, BLL.Services.CarModelService>(
 builder.Services.AddScoped<IService<ColorDTO>, BLL.Services.ColorService>();
 
 builder.Services.AddAutoMapper(typeof(MapperProfile));
-//builder.Services.AddAutoMapper(typeof(MapperProfile));
+//builder.Services.AddAutoMapper(typeof(MapperProfileCodeFirst));
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAnyOrigin", policy =>
+    {
+        policy.AllowAnyOrigin()  // Allows all origins
+            .AllowAnyMethod()      // Allows all HTTP methods (GET, POST, PUT, DELETE, etc.)
+            .AllowAnyHeader();     // Allows all headers
+    });
+});
+
+
+
 
 
 builder.Services.AddDbContext<CarServiceKpzContext>(options =>
@@ -45,6 +60,9 @@ builder.Services.AddDbContext<CarServiceKpzContext>(options =>
 });
 
 var app = builder.Build();
+
+// In the Configure method
+app.UseCors("AllowAnyOrigin");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

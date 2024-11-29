@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeFirst\CodeFirst.csproj" />
-    <ProjectReference Include="..\DbFirst\DbFirst.csproj" />
+    <ProjectReference Include="..\Abstraction\Abstraction.csproj" />
   </ItemGroup>
 
 </Project>

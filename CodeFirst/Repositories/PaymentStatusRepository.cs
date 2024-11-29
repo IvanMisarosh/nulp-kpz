@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abstraction;
-using CodeFirst.Models;
+using CodeFirst1.Models;
 using Abstraction.ModelInterfaces;
 
-namespace CodeFirst.Repositories
+namespace CodeFirst1.Repositories
 {
     public class PaymentStatusRepository : IRepository<IPaymentStatus>
     {

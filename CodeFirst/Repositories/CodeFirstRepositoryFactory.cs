@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Abstraction;
 using Abstraction.ModelInterfaces;
-using CodeFirst.Models;
+using CodeFirst1.Models;
 
-namespace CodeFirst.Repositories
+namespace CodeFirst1.Repositories
 {
     public class CodeFirstRepositoryFactory : IRepositoryFactory
     {

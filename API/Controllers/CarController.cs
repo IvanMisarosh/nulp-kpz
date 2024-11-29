@@ -47,22 +47,49 @@ namespace API.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult AddCar([FromBody] CarDTO car)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                // Return detailed validation errors
+                return BadRequest(new
+                {
+                    Message = "Validation failed for the request.",
+                    Errors = ModelState.Values.SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                });
             }
 
-            var result = _carService.Add(car);
-
-            if (!result)
+            try
             {
-                return BadRequest();
-            }
+                var result = _carService.Add(car);
 
-            return CreatedAtAction("GetCar", new { id = car.CarID }, car);
+                if (!result)
+                {
+                    // Return a custom error message if the service fails
+                    return BadRequest(new
+                    {
+                        Message = "Unable to add the car. Please verify the data and try again.",
+                        Hint = "Ensure that the car details, such as VIN or model, are unique and valid."
+                    });
+                }
+
+                // Return success with the created resource URI
+                return CreatedAtAction("GetCar", new { id = car.CarID }, car);
+            }
+            catch (Exception ex)
+            {
+                // Return detailed information about unexpected errors
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Message = "An unexpected error occurred while processing the request.",
+                    Error = ex.Message,
+                    StackTrace = ex.StackTrace // Avoid exposing this in production
+                });
+            }
         }
+
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -23,5 +23,7 @@ namespace Abstraction.ModelInterfaces
         int? Mileage { get; set; }
 
         //virtual ICarModel CarModel { get; set; }
+
+        //public virtual ICollection<IVisit> Visits { get; set; } 
     }
 }

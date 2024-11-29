@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
-namespace CodeFirst.Models
+namespace CodeFirst1.Models
 {
     public partial class CarServiceKpzContext : DbContext
     {

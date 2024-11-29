@@ -16,8 +16,8 @@ namespace BLL.Mappers
             // Map entities to DTOs and vice versa
             CreateMap<Car, CarDTO>()
                 //.ForMember(dest => dest.CarModel, opt => opt.MapFrom(src => src.CarModel))
-                .ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color))
-                .ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer))
+                //.ForMember(dest => dest.Color, opt => opt.MapFrom(src => src.Color))
+                //.ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer))
                 .ReverseMap();
 
             CreateMap<CarDTO, ICar>()
@@ -34,10 +34,10 @@ namespace BLL.Mappers
             CreateMap<Color, ColorDTO>().ReverseMap();
 
             CreateMap<Visit, VisitDTO>()
-                .ForMember(dest => dest.Car, opt => opt.MapFrom(src => src.Car))
-                //.ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.EmployeeID))
-                .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => src.PaymentStatus))
-                .ForMember(dest => dest.VisitStatus, opt => opt.MapFrom(src => src.VisitStatus))
+                //.ForMember(dest => dest.Car, opt => opt.MapFrom(src => src.Car))
+                ////.ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.EmployeeID))
+                //.ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => src.PaymentStatus))
+                //.ForMember(dest => dest.VisitStatus, opt => opt.MapFrom(src => src.VisitStatus))
                 .ReverseMap();
 
             CreateMap<VisitDTO, IVisit>()

@@ -1,6 +1,6 @@
 ﻿using Abstraction;
 using Abstraction.ModelInterfaces;
-using CodeFirst.Models;
+using CodeFirst1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace CodeFirst.Repositories
+namespace CodeFirst1.Repositories
 {
     public class CustomerRepository : IRepository<ICustomer>
     {

@@ -1,11 +1,11 @@
 ﻿using Abstraction;
 using Abstraction.ModelInterfaces;
-using CodeFirst.Models;
+using CodeFirst1.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeFirst.Repositories
+namespace CodeFirst1.Repositories
 {
     public class VisitRepository: IRepository<IVisit>
     {

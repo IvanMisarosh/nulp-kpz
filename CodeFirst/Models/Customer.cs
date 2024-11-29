@@ -1,6 +1,6 @@
 using Abstraction.ModelInterfaces;
 
-namespace CodeFirst.Models
+namespace CodeFirst1.Models
 {
     using System;
     using System.Collections.Generic;

@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abstraction\Abstraction.csproj" />
-    <ProjectReference Include="..\CodeFirst\CodeFirst.csproj" />
     <ProjectReference Include="..\DbFirst\DbFirst.csproj" />
   </ItemGroup>
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CodeFirst.Models;
+using CodeFirst1.Models;
 using Abstraction;
 using Abstraction.ModelInterfaces;
 
-namespace CodeFirst.Repositories
+namespace CodeFirst1.Repositories
 {
     public class ColorRepository: IRepository<IColor>
     {
