@@ -5,18 +5,19 @@ using lab_3.Command;
 using lab_3.InfoWindows;
 using Newtonsoft.Json;
 using System.Net.Http;
-using Abstraction.DTOs;
+//using Abstraction.DTOs;
 using System.Text;
+using Wpf.Models;
 
 namespace lab_3.ViewModels
 {
     public class CustomerViewModel : BaseViewModel
     {
-        private CustomerDTO _selectedCustomer;
+        private Customer _selectedCustomer;
         private CustomerInfoWindow _customerInfoWindow;
 
-        private ObservableCollection<CustomerDTO> _customers;
-        public ObservableCollection<CustomerDTO> Customers
+        private ObservableCollection<Customer> _customers;
+        public ObservableCollection<Customer> Customers
         {
             get => _customers;
             set
@@ -26,7 +27,7 @@ namespace lab_3.ViewModels
             }
         }
 
-        public CustomerDTO SelectedCustomer
+        public Customer SelectedCustomer
         {
             get => _selectedCustomer;
             set
@@ -63,16 +64,16 @@ namespace lab_3.ViewModels
         private async void LoadCustomers()
         {
             var response = await HttpClient.GetStringAsync($"{ServiceUrl}api/Customer");
-            var customers = JsonConvert.DeserializeObject<List<CustomerDTO>>(response);
+            var customers = JsonConvert.DeserializeObject<List<Customer>>(response);
             if (customers is null)
                 return;
-            Customers = new ObservableCollection<CustomerDTO>(customers);
+            Customers = new ObservableCollection<Customer>(customers);
 
         }
 
         public void AddCustomer(object parameter)
         {
-            SelectedCustomer = new CustomerDTO();
+            SelectedCustomer = new Customer();
             OpenCustomerInfoWindow();
         }
 

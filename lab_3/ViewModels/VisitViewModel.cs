@@ -5,15 +5,16 @@ using lab_3.Command;
 using lab_3.InfoWindows;
 using Newtonsoft.Json;
 using System.Net.Http;
-using Abstraction.DTOs;
+//using Abstraction.DTOs;
 using System.Text;
+using Wpf.Models;
 
 namespace lab_3.ViewModels
 {
     public class VisitViewModel : BaseViewModel
     {
-        private ObservableCollection<VisitDTO> _visits;
-        public ObservableCollection<VisitDTO> Visits
+        private ObservableCollection<Visit> _visits;
+        public ObservableCollection<Visit> Visits
         {
             get => _visits;
             set
@@ -26,11 +27,11 @@ namespace lab_3.ViewModels
             }
         }
 
-        private VisitDTO _selectedVisit;
-        private VisitDTO _editableVisit;
+        private Visit _selectedVisit;
+        private Visit _editableVisit;
         private VisitInfoWindow _visitInfoWindow;
 
-        public VisitDTO SelectedVisit
+        public Visit SelectedVisit
         {
             get => _selectedVisit;
             set
@@ -62,15 +63,15 @@ namespace lab_3.ViewModels
         private async void LoadVisits()
         {
             var response = await HttpClient.GetStringAsync($"{ServiceUrl}api/Visit");
-            var visits = JsonConvert.DeserializeObject<List<VisitDTO>>(response);
+            var visits = JsonConvert.DeserializeObject<List<Visit>>(response);
             if (visits is null)
                 return;
-            Visits = new ObservableCollection<VisitDTO>(visits);
+            Visits = new ObservableCollection<Visit>(visits);
         }
 
         public void AddVisit(object parameter)
         {
-            SelectedVisit = new VisitDTO();
+            SelectedVisit = new Visit();
             OpenVisitInfoWindow();
         }
 

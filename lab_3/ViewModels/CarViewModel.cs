@@ -6,16 +6,17 @@ using lab_3.Command;
 using lab_3.InfoWindows;
 using Newtonsoft.Json;
 using System.Net.Http;
-using Abstraction.DTOs;
+//using Abstraction.DTOs;
 using System.Text;
+using Wpf.Models;
 
 
 namespace lab_3.ViewModels
 {
     public class CarViewModel : BaseViewModel
     {
-        private ObservableCollection<CarDTO> _cars;
-        public ObservableCollection<CarDTO> Cars
+        private ObservableCollection<Car> _cars;
+        public ObservableCollection<Car> Cars
         {
             get => _cars;
             set
@@ -29,9 +30,9 @@ namespace lab_3.ViewModels
         }
 
 
-        private CarDTO _selectedCar;
+        private Car _selectedCar;
         private CarInfoWindow CarInfoWindow;
-        public CarDTO SelectedCar
+        public Car SelectedCar
         {
             get => _selectedCar;
             set
@@ -65,16 +66,16 @@ namespace lab_3.ViewModels
         private async void LoadCars()
         {
             var response = await HttpClient.GetStringAsync($"{ServiceUrl}api/Car");
-            var cars = JsonConvert.DeserializeObject<List<CarDTO>>(response);
+            var cars = JsonConvert.DeserializeObject<List<Car>>(response);
             if (cars is null)
                 return;
-            Cars = new ObservableCollection<CarDTO>(cars);
+            Cars = new ObservableCollection<Car>(cars);
 
         }
 
         public void AddCar(object parameter)
         {
-            SelectedCar = new CarDTO();
+            SelectedCar = new Car();
             OpenCarInfoWindow();
         }
 
