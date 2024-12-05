@@ -33,7 +33,13 @@ namespace BLL.Services
 
         public bool Add(UserDTO entity)
         {
-            throw new NotImplementedException();
+            var user = _mapper.Map<IUser>(entity);
+            var result = _userRepository.Add(user);
+            if (result)
+            {
+                _userRepository.SaveChanges();
+            }
+            return result;
         }
 
         public bool Delete(int id)
@@ -85,6 +91,13 @@ namespace BLL.Services
         {
             var user = _userRepository.GetAll().FirstOrDefault(e => e.RefreshToken == token);
             return user;
+        }
+
+        public bool UserExists(string username)
+        {
+            var user = _userRepository.GetAll().FirstOrDefault(e => e.Username == username);
+
+            return user != null;
         }
     }
 }

@@ -15,5 +15,7 @@ namespace Abstraction.ServiceInterfaces
         bool UpdateUser(IUser user);
 
         IUser GetUserByRefreshToken(string token);
+
+        bool UserExists(string username);
     }
 }

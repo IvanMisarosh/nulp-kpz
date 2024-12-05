@@ -4,11 +4,13 @@ using BLL.Services;
 using Abstraction.DTOs;
 using Abstraction;
 using Abstraction.ModelInterfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PaymentStatusController : Controller
     {
         private readonly IService<PaymentStatusDTO> _paymentStatusService;

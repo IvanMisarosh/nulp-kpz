@@ -4,11 +4,13 @@ using BLL.Services;
 using Abstraction.DTOs;
 using Abstraction.ModelInterfaces;
 using Abstraction;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VisitController : Controller
     {
         private readonly IService<VisitDTO> _VisitService;

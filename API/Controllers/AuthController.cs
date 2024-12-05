@@ -4,6 +4,7 @@ using Abstraction.DTOs;
 using Microsoft.AspNetCore.Identity.Data;
 using API.TokenProviders;
 using Abstraction.ServiceInterfaces;
+using DbFirst.Models;
 
 
 namespace API.Controllers
@@ -42,7 +43,7 @@ namespace API.Controllers
 
             // Save refresh token in the database
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(10); // Example: 7 days
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(55); // Example: 7 days
             _userService.UpdateUser(user);
 
             return Ok(new
@@ -67,7 +68,7 @@ namespace API.Controllers
 
             // Update refresh token in the database
             user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(10);
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(55);
             _userService.UpdateUser(user);
 
             return Ok(new
@@ -75,6 +76,30 @@ namespace API.Controllers
                 AccessToken = newAccessToken,
                 RefreshToken = newRefreshToken
             });
+        }
+
+        [HttpPost("register")]
+        public IActionResult Register([FromBody] RegisterRequestDTO request)
+        {
+            if (_userService.UserExists(request.Username))
+            {
+                return BadRequest("Username already exists.");
+            }
+
+            var user = new UserDTO
+            {
+                Username = request.Username,
+                PasswordHash = HashPassword(request.Password)
+            };
+
+            _userService.Add(user);
+            return Ok(new { Message = "Registration successful" });
+        }
+
+        private string HashPassword(string password)
+        {
+            // Implement your password hashing logic here (e.g., using BCrypt or other libraries)
+            return password;  // Simplified for demo purposes
         }
     }
 }

@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Abstraction.DTOs;
 using Abstraction;
 using Abstraction.ModelInterfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CarModelController : Controller
     {
         private readonly IService<CarModelDTO> _carModelService;

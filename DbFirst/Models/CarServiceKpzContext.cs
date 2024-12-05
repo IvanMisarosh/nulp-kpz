@@ -623,6 +623,17 @@ public partial class CarServiceKpzContext : DbContext
                 .IsUnicode(false);
         });
 
+        // Add a unique index on the Username property
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
+
+        // You can also customize column properties if needed (e.g., set max length)
+        modelBuilder.Entity<User>()
+            .Property(u => u.Username)
+            .HasMaxLength(256); // Optionally set a maximum length for the username
+
+
         OnModelCreatingPartial(modelBuilder);
     }
 

@@ -21,7 +21,8 @@ namespace DbFirst.Repositories
 
         public bool Add(IUser entity)
         {
-            throw new NotImplementedException();
+            var result = _context.Users.Add((User)entity);
+            return result.State == Microsoft.EntityFrameworkCore.EntityState.Added;
         }
 
         public bool Delete(IUser entity)

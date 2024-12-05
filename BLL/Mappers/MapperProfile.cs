@@ -20,6 +20,13 @@ namespace BLL.Mappers
                 //.ForMember(dest => dest.Customer, opt => opt.MapFrom(src => src.Customer))
                 .ReverseMap();
 
+            CreateMap<User, UserDTO>() .ReverseMap();
+
+            CreateMap<UserDTO, IUser>()
+                .ConstructUsing(dto => new User())
+                .ReverseMap();
+
+
             CreateMap<CarDTO, ICar>()
                 .ConstructUsing(dto => new Car())
                 .ReverseMap();
